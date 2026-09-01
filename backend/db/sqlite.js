@@ -17,6 +17,16 @@ db.exec(`
     )
 `);
 
+const userColumns = db.prepare("PRAGMA table_info(users)").all().map(col => col.name);
+
+if (!userColumns.includes("reset_token")) {
+    db.exec("ALTER TABLE users ADD COLUMN reset_token TEXT");
+}
+
+if (!userColumns.includes("reset_token_expires")) {
+    db.exec("ALTER TABLE users ADD COLUMN reset_token_expires TEXT");
+}
+
 db.exec(`
     CREATE TABLE IF NOT EXISTS visits (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
