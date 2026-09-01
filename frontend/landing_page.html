@@ -1,0 +1,1382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Sankalp | Smart Construction Management</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: "Inter", sans-serif;
+            color: #17202a;
+            background: #ffffff;
+            line-height: 1.6;
+        }
+
+        /* NAVBAR */
+
+        .navbar {
+            height: 78px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 0 7%;
+
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(12px);
+
+            border-bottom: 1px solid #eeeeee;
+
+            z-index: 1000;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-box {
+            width: 42px;
+            height: 42px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: #f59e0b;
+            color: #111827;
+
+            border-radius: 10px;
+
+            font-weight: 800;
+            font-size: 22px;
+        }
+
+        .logo h2 {
+            font-size: 23px;
+            letter-spacing: 1px;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 32px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #4b5563;
+
+            font-size: 14px;
+            font-weight: 500;
+
+            transition: 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: #f59e0b;
+        }
+
+        .nav-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .login-btn,
+        .start-btn {
+            padding: 11px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-family: inherit;
+        }
+
+        .login-btn {
+            border: 1px solid #d1d5db;
+            background: white;
+        }
+
+        .start-btn {
+            border: none;
+            background: #f59e0b;
+            color: #111827;
+        }
+
+        .start-btn:hover {
+            background: #d97706;
+            color: white;
+        }
+
+        /* HERO */
+
+        .hero {
+            min-height: 760px;
+
+            padding: 160px 7% 90px;
+
+            display: flex;
+            align-items: center;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    rgba(255,255,255,0.98) 0%,
+                    rgba(255,255,255,0.94) 43%,
+                    rgba(255,255,255,0.25) 100%
+                ),
+                url("https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=1800&q=90");
+
+            background-size: cover;
+            background-position: center;
+        }
+
+        .hero-content {
+            max-width: 680px;
+        }
+
+        .tag {
+            display: inline-block;
+
+            padding: 8px 15px;
+
+            background: #fff7e6;
+            color: #b45309;
+
+            border-radius: 30px;
+
+            font-size: 12px;
+            font-weight: 700;
+
+            margin-bottom: 20px;
+        }
+
+        .hero h1 {
+            font-size: clamp(45px, 5vw, 72px);
+            line-height: 1.05;
+
+            letter-spacing: -2px;
+
+            margin-bottom: 25px;
+        }
+
+        .hero h1 span {
+            color: #f59e0b;
+        }
+
+        .hero p {
+            max-width: 600px;
+
+            color: #5b6470;
+
+            font-size: 17px;
+
+            margin-bottom: 30px;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 12px;
+        }
+
+        .primary {
+            padding: 15px 25px;
+
+            border: none;
+            border-radius: 9px;
+
+            background: #f59e0b;
+            color: #111827;
+
+            font-weight: 700;
+
+            cursor: pointer;
+        }
+
+        .secondary {
+            padding: 15px 25px;
+
+            border: 1px solid #d1d5db;
+            border-radius: 9px;
+
+            background: white;
+
+            cursor: pointer;
+
+            font-weight: 600;
+        }
+
+        /* STATS */
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4,1fr);
+
+            padding: 45px 7%;
+
+            background: #17202a;
+            color: white;
+        }
+
+        .stat {
+            text-align: center;
+            border-right: 1px solid #374151;
+        }
+
+        .stat:last-child {
+            border: none;
+        }
+
+        .stat h2 {
+            color: #f59e0b;
+            font-size: 32px;
+        }
+
+        .stat p {
+            color: #cbd5e1;
+            font-size: 13px;
+        }
+
+        /* GENERAL */
+
+        section {
+            scroll-margin-top: 80px;
+        }
+
+        .section {
+            padding: 100px 7%;
+        }
+
+        .heading {
+            max-width: 720px;
+            margin-bottom: 55px;
+        }
+
+        .label {
+            color: #d97706;
+            font-size: 12px;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+
+            margin-bottom: 10px;
+        }
+
+        .heading h2 {
+            font-size: 42px;
+            line-height: 1.2;
+
+            margin-bottom: 15px;
+        }
+
+        .heading p {
+            color: #6b7280;
+        }
+
+        /* PROBLEM */
+
+        .problem {
+            background: #f8fafc;
+        }
+
+        .problem-grid {
+            display: grid;
+
+            grid-template-columns: repeat(3,1fr);
+
+            gap: 22px;
+        }
+
+        .problem-card {
+            background: white;
+
+            padding: 30px;
+
+            border-radius: 15px;
+
+            border: 1px solid #e5e7eb;
+        }
+
+        .problem-card .icon {
+            font-size: 30px;
+            margin-bottom: 18px;
+        }
+
+        .problem-card h3 {
+            margin-bottom: 10px;
+        }
+
+        .problem-card p {
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+        /* FEATURES */
+
+        .feature-grid {
+            display: grid;
+
+            grid-template-columns: repeat(3,1fr);
+
+            gap: 22px;
+        }
+
+        .feature {
+            padding: 30px;
+
+            border: 1px solid #e5e7eb;
+            border-radius: 15px;
+
+            transition: 0.3s;
+        }
+
+        .feature:hover {
+            transform: translateY(-6px);
+
+            box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+
+            border-color: #f5c46b;
+        }
+
+        .feature-icon {
+            width: 50px;
+            height: 50px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: #fff7e6;
+
+            border-radius: 10px;
+
+            font-size: 23px;
+
+            margin-bottom: 20px;
+        }
+
+        .feature h3 {
+            margin-bottom: 10px;
+        }
+
+        .feature p {
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+        /* HOW IT WORKS */
+
+        .how {
+            background: #f8fafc;
+        }
+
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(4,1fr);
+            gap: 20px;
+        }
+
+        .step {
+            background: white;
+
+            padding: 30px;
+
+            border-radius: 14px;
+
+            border-top: 3px solid #f59e0b;
+        }
+
+        .step-number {
+            color: #f59e0b;
+
+            font-weight: 800;
+
+            margin-bottom: 15px;
+        }
+
+        .step h3 {
+            margin-bottom: 10px;
+        }
+
+        .step p {
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+        /* USERS */
+
+        .users {
+            display: grid;
+
+            grid-template-columns: repeat(3,1fr);
+
+            gap: 25px;
+        }
+
+        .user-card {
+            min-height: 260px;
+
+            padding: 35px;
+
+            border-radius: 16px;
+
+            background: #17202a;
+            color: white;
+        }
+
+        .user-card:nth-child(2) {
+            background: #f59e0b;
+            color: #111827;
+        }
+
+        .user-card:nth-child(3) {
+            background: #f1f5f9;
+            color: #17202a;
+        }
+
+        .user-card .user-icon {
+            font-size: 35px;
+            margin-bottom: 25px;
+        }
+
+        .user-card h3 {
+            font-size: 22px;
+            margin-bottom: 12px;
+        }
+
+        .user-card p {
+            font-size: 14px;
+            opacity: 0.8;
+        }
+
+        /* ABOUT */
+
+        .about {
+            display: grid;
+
+            grid-template-columns: 1fr 1fr;
+
+            gap: 70px;
+
+            align-items: center;
+        }
+
+        .about img {
+            width: 100%;
+            height: 500px;
+
+            object-fit: cover;
+
+            border-radius: 18px;
+        }
+
+        .about-content h2 {
+            font-size: 42px;
+
+            line-height: 1.2;
+
+            margin-bottom: 20px;
+        }
+
+        .about-content > p {
+            color: #6b7280;
+
+            margin-bottom: 25px;
+        }
+
+        .checks {
+            list-style: none;
+        }
+
+        .checks li {
+            margin-bottom: 14px;
+
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        /* CTA */
+
+        .cta {
+            margin: 80px 7%;
+
+            padding: 80px 30px;
+
+            text-align: center;
+
+            background: #17202a;
+
+            border-radius: 20px;
+
+            color: white;
+        }
+
+        .cta h2 {
+            font-size: 42px;
+
+            margin-bottom: 15px;
+        }
+
+        .cta p {
+            max-width: 600px;
+
+            margin: auto;
+
+            color: #cbd5e1;
+
+            margin-bottom: 30px;
+        }
+
+        /* FOOTER */
+
+        footer {
+            padding: 60px 7% 25px;
+
+            background: #0f1720;
+
+            color: white;
+        }
+
+        .footer-grid {
+            display: grid;
+
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+
+            gap: 40px;
+
+            padding-bottom: 40px;
+        }
+
+        footer p,
+        footer a {
+            color: #94a3b8;
+
+            font-size: 13px;
+        }
+
+        footer a {
+            display: block;
+
+            text-decoration: none;
+
+            margin-bottom: 10px;
+        }
+
+        footer a:hover {
+            color: #f59e0b;
+        }
+
+        .copyright {
+            border-top: 1px solid #26313c;
+
+            padding-top: 20px;
+
+            text-align: center;
+
+            color: #64748b;
+
+            font-size: 12px;
+        }
+
+        /* MOBILE */
+
+        @media(max-width:900px) {
+
+            .nav-links {
+                display: none;
+            }
+
+            .hero {
+                padding-left: 5%;
+                padding-right: 5%;
+            }
+
+            .stats,
+            .problem-grid,
+            .feature-grid,
+            .steps,
+            .users {
+                grid-template-columns: repeat(2,1fr);
+            }
+
+            .about {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media(max-width:600px) {
+
+            .nav-actions .login-btn {
+                display: none;
+            }
+
+            .hero h1 {
+                font-size: 45px;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+            }
+
+            .stats,
+            .problem-grid,
+            .feature-grid,
+            .steps,
+            .users {
+                grid-template-columns: 1fr;
+            }
+
+            .stat {
+                border-right: none;
+                border-bottom: 1px solid #374151;
+                padding: 20px;
+            }
+
+            .section {
+                padding: 70px 5%;
+            }
+
+            .heading h2,
+            .about-content h2,
+            .cta h2 {
+                font-size: 32px;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .cta {
+                margin: 50px 5%;
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+
+<nav class="navbar">
+
+    <div class="logo">
+        <div class="logo-box">S</div>
+        <h2>SANKALP</h2>
+    </div>
+
+    <ul class="nav-links">
+
+        <li><a href="#home">Home</a></li>
+        <li><a href="#problem">Challenges</a></li>
+        <li><a href="#features">Solutions</a></li>
+        <li><a href="#how">How It Works</a></li>
+        <li><a href="#about">About</a></li>
+
+    </ul>
+
+    <div class="nav-actions">
+
+        <button
+            class="login-btn"
+            onclick="goLogin()">
+            Login
+        </button>
+
+        <button
+            class="start-btn"
+            onclick="openProjectForm()">
+            Start Project
+        </button>
+
+    </div>
+
+</nav>
+
+
+<!-- HERO -->
+
+<section class="hero" id="home">
+
+    <div class="hero-content">
+
+        <span class="tag">
+            SMART CONSTRUCTION MANAGEMENT PLATFORM
+        </span>
+
+        <h1>
+            Build your dream home
+            <span>with confidence.</span>
+        </h1>
+
+        <p>
+
+            Sankalp is a centralized construction management
+            platform that connects homeowners, contractors,
+            site engineers and project managers.
+
+            Plan your project, monitor construction progress,
+            manage budgets and stay connected throughout
+            your construction journey.
+
+        </p>
+
+        <div class="hero-buttons">
+
+            <button
+                class="primary"
+                onclick="openProjectForm()">
+                Start Your Project →
+            </button>
+
+            <button
+                class="secondary"
+                onclick="document.getElementById('features').scrollIntoView()">
+                Explore Platform
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- STATS -->
+
+<section class="stats">
+
+    <div class="stat">
+        <h2>01</h2>
+        <p>Unified Platform</p>
+    </div>
+
+    <div class="stat">
+        <h2>24/7</h2>
+        <p>Project Visibility</p>
+    </div>
+
+    <div class="stat">
+        <h2>360°</h2>
+        <p>Project Monitoring</p>
+    </div>
+
+    <div class="stat">
+        <h2>100%</h2>
+        <p>Transparency Focus</p>
+    </div>
+
+</section>
+
+
+<!-- PROBLEM -->
+
+<section class="section problem" id="problem">
+
+    <div class="heading">
+
+        <div class="label">
+            The Challenge
+        </div>
+
+        <h2>
+            Construction projects are harder to manage than they should be.
+        </h2>
+
+        <p>
+
+            Home construction involves multiple people,
+            changing requirements, material purchases,
+            expenses and daily site activities.
+
+            Without a centralized system, important information
+            can easily get lost.
+
+        </p>
+
+    </div>
+
+
+    <div class="problem-grid">
+
+        <div class="problem-card">
+
+            <div class="icon">📋</div>
+
+            <h3>
+                Scattered Information
+            </h3>
+
+            <p>
+                Project information is often spread across
+                phone calls, messages, notebooks and spreadsheets.
+            </p>
+
+        </div>
+
+
+        <div class="problem-card">
+
+            <div class="icon">💸</div>
+
+            <h3>
+                Budget Uncertainty
+            </h3>
+
+            <p>
+                Homeowners can struggle to understand where
+                money is being spent and whether the project
+                is staying within budget.
+            </p>
+
+        </div>
+
+
+        <div class="problem-card">
+
+            <div class="icon">👷</div>
+
+            <h3>
+                Coordination Problems
+            </h3>
+
+            <p>
+                Coordinating contractors, engineers, workers
+                and homeowners can become difficult without
+                a centralized communication system.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- SOLUTION -->
+
+<section class="section" id="features">
+
+    <div class="heading">
+
+        <div class="label">
+            The Sankalp Solution
+        </div>
+
+        <h2>
+            Everything your construction project needs.
+        </h2>
+
+        <p>
+
+            Sankalp provides a single digital environment
+            where every important part of your construction
+            project can be organized and monitored.
+
+        </p>
+
+    </div>
+
+
+    <div class="feature-grid">
+
+        <div class="feature">
+
+            <div class="feature-icon">📊</div>
+
+            <h3>
+                Project Dashboard
+            </h3>
+
+            <p>
+                Get a complete overview of construction progress,
+                upcoming activities, deadlines and project status
+                from one dashboard.
+            </p>
+
+        </div>
+
+
+        <div class="feature">
+
+            <div class="feature-icon">🏗️</div>
+
+            <h3>
+                Contractor Management
+            </h3>
+
+            <p>
+                Discover, connect with and manage contractors
+                and construction professionals based on your
+                project requirements.
+            </p>
+
+        </div>
+
+
+        <div class="feature">
+
+            <div class="feature-icon">📍</div>
+
+            <h3>
+                Site Progress
+            </h3>
+
+            <p>
+                Upload daily site updates, images and progress
+                information to keep homeowners informed.
+            </p>
+
+        </div>
+
+
+        <div class="feature">
+
+            <div class="feature-icon">💰</div>
+
+            <h3>
+                Budget Tracking
+            </h3>
+
+            <p>
+                Maintain estimated and actual construction
+                expenses to improve financial visibility.
+            </p>
+
+        </div>
+
+
+        <div class="feature">
+
+            <div class="feature-icon">📦</div>
+
+            <h3>
+                Material Management
+            </h3>
+
+            <p>
+                Organize construction materials and compare
+                available prices before making purchases.
+            </p>
+
+        </div>
+
+
+        <div class="feature">
+
+            <div class="feature-icon">🔔</div>
+
+            <h3>
+                Smart Notifications
+            </h3>
+
+            <p>
+                Receive notifications about important project
+                milestones, updates, expenses and activities.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- HOW IT WORKS -->
+
+<section class="section how" id="how">
+
+    <div class="heading">
+
+        <div class="label">
+            Simple Process
+        </div>
+
+        <h2>
+            From planning to completion.
+        </h2>
+
+        <p>
+            Sankalp simplifies the construction journey
+            through a structured digital workflow.
+        </p>
+
+    </div>
+
+
+    <div class="steps">
+
+        <div class="step">
+
+            <div class="step-number">01</div>
+
+            <h3>
+                Create Project
+            </h3>
+
+            <p>
+                Enter your project details, location,
+                requirements and estimated budget.
+            </p>
+
+        </div>
+
+
+        <div class="step">
+
+            <div class="step-number">02</div>
+
+            <h3>
+                Connect Professionals
+            </h3>
+
+            <p>
+                Find suitable contractors, engineers
+                and construction professionals.
+            </p>
+
+        </div>
+
+
+        <div class="step">
+
+            <div class="step-number">03</div>
+
+            <h3>
+                Monitor Progress
+            </h3>
+
+            <p>
+                Follow daily work updates, expenses,
+                materials and construction milestones.
+            </p>
+
+        </div>
+
+
+        <div class="step">
+
+            <div class="step-number">04</div>
+
+            <h3>
+                Complete Project
+            </h3>
+
+            <p>
+                Stay organized and informed until
+                your dream home is completed.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- USERS -->
+
+<section class="section">
+
+    <div class="heading">
+
+        <div class="label">
+            Built For Everyone
+        </div>
+
+        <h2>
+            One platform. Different roles.
+        </h2>
+
+        <p>
+            Sankalp creates role-specific experiences
+            for everyone involved in construction.
+        </p>
+
+    </div>
+
+
+    <div class="users">
+
+        <div class="user-card">
+
+            <div class="user-icon">🏠</div>
+
+            <h3>
+                Homeowners
+            </h3>
+
+            <p>
+                Track your home's construction,
+                monitor expenses, view updates,
+                communicate with professionals
+                and stay informed about your project.
+            </p>
+
+        </div>
+
+
+        <div class="user-card">
+
+            <div class="user-icon">🏗️</div>
+
+            <h3>
+                Contractors & Professionals
+            </h3>
+
+            <p>
+                Manage assigned projects, update
+                construction progress, coordinate
+                activities and communicate with
+                homeowners.
+            </p>
+
+        </div>
+
+
+        <div class="user-card">
+
+            <div class="user-icon">⚙️</div>
+
+            <h3>
+                Administrators
+            </h3>
+
+            <p>
+                Manage users, projects, professionals,
+                platform activities and overall system
+                operations from a centralized dashboard.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ABOUT -->
+
+<section class="section">
+
+    <div class="about" id="about">
+
+        <div>
+
+            <img
+                src="https://images.unsplash.com/photo-1541888946425-d81bb19240f5?auto=format&fit=crop&w=1200&q=85"
+                alt="Construction workers">
+
+        </div>
+
+
+        <div class="about-content">
+
+            <div class="label">
+                Why Sankalp
+            </div>
+
+            <h2>
+                Making construction more transparent.
+            </h2>
+
+            <p>
+
+                Our goal is to reduce communication gaps,
+                improve project visibility and give homeowners
+                better control over their construction journey.
+
+                Instead of depending on scattered information,
+                Sankalp brings everything into one organized
+                digital platform.
+
+            </p>
+
+
+            <ul class="checks">
+
+                <li>
+                    ✓ Centralized project information
+                </li>
+
+                <li>
+                    ✓ Real-time construction updates
+                </li>
+
+                <li>
+                    ✓ Better communication between stakeholders
+                </li>
+
+                <li>
+                    ✓ Improved budget visibility
+                </li>
+
+                <li>
+                    ✓ Organized construction workflow
+                </li>
+
+            </ul>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- CTA -->
+
+<section class="cta">
+
+    <h2>
+        Ready to start your construction journey?
+    </h2>
+
+    <p>
+
+        Create your project on Sankalp and bring your
+        homeowners, contractors and project activities
+        together in one place.
+
+    </p>
+
+    <button
+        class="primary"
+        onclick="openProjectForm()">
+        Start Your Project →
+    </button>
+
+</section>
+
+
+<!-- FOOTER -->
+
+<footer>
+
+    <div class="footer-grid">
+
+        <div>
+
+            <div class="logo">
+
+                <div class="logo-box">
+                    S
+                </div>
+
+                <h2>
+                    SANKALP
+                </h2>
+
+            </div>
+
+            <p style="margin-top:20px; max-width:350px;">
+
+                A smart construction management platform
+                designed to make construction more organized,
+                transparent and connected.
+
+            </p>
+
+        </div>
+
+
+        <div>
+
+            <h4>Platform</h4>
+
+            <br>
+
+            <a href="#features">Project Management</a>
+            <a href="#features">Budget Tracking</a>
+            <a href="#features">Site Updates</a>
+            <a href="#features">Notifications</a>
+
+        </div>
+
+
+        <div>
+
+            <h4>Users</h4>
+
+            <br>
+
+            <a href="#">Homeowners</a>
+            <a href="#">Contractors</a>
+            <a href="#">Engineers</a>
+            <a href="#">Administrators</a>
+
+        </div>
+
+
+        <div>
+
+            <h4>Company</h4>
+
+            <br>
+
+            <a href="#about">About Sankalp</a>
+            <a href="#">Contact</a>
+            <a href="#">Privacy</a>
+            <a href="#">Terms</a>
+
+        </div>
+
+    </div>
+
+
+    <div class="copyright">
+
+        © 2026 Sankalp Construction Management Platform.
+        All rights reserved.
+
+    </div>
+
+</footer>
+
+
+<script>
+
+    function goLogin() {
+
+        window.location.href = "./login_page.html";
+
+    }
+
+
+    function openProjectForm() {
+
+        window.location.href = "start-project.html";
+
+    }
+
+</script>
+
+</body>
+</html>

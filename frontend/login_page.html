@@ -1,0 +1,957 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Sankalp | Construction Management</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Inter", sans-serif;
+            background: #f5f6f8;
+            min-height: 100vh;
+        }
+
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* ================= LEFT SECTION ================= */
+
+        .left-section {
+            width: 55%;
+            min-height: 100vh;
+            position: relative;
+            overflow: hidden;
+
+            background:
+                linear-gradient(
+                    rgba(12, 18, 25, 0.65),
+                    rgba(12, 18, 25, 0.75)
+                ),
+                url("https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=1600&q=85");
+
+            background-size: cover;
+            background-position: center;
+            color: white;
+
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 45px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-icon {
+            width: 45px;
+            height: 45px;
+            background: #f59e0b;
+            border-radius: 10px;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            font-size: 22px;
+            font-weight: 800;
+            color: #111827;
+        }
+
+        .logo-text {
+            font-size: 27px;
+            font-weight: 800;
+            letter-spacing: 1px;
+        }
+
+        .hero-content {
+            max-width: 600px;
+            margin-bottom: 70px;
+        }
+
+        .hero-content .tag {
+            display: inline-block;
+            background: rgba(245, 158, 11, 0.2);
+            border: 1px solid rgba(245, 158, 11, 0.5);
+            color: #fbbf24;
+
+            padding: 8px 14px;
+            border-radius: 30px;
+
+            font-size: 13px;
+            font-weight: 600;
+
+            margin-bottom: 20px;
+        }
+
+        .hero-content h1 {
+            font-size: clamp(38px, 4vw, 62px);
+            line-height: 1.05;
+            margin-bottom: 22px;
+            font-weight: 800;
+        }
+
+        .hero-content h1 span {
+            color: #f59e0b;
+        }
+
+        .hero-content p {
+            font-size: 16px;
+            line-height: 1.7;
+            color: #e5e7eb;
+            max-width: 540px;
+        }
+
+        .features {
+            display: flex;
+            gap: 30px;
+            margin-top: 35px;
+        }
+
+        .feature {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 13px;
+            color: #e5e7eb;
+        }
+
+        .feature-icon {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.12);
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* ================= RIGHT SECTION ================= */
+
+        .right-section {
+            width: 45%;
+            background: #ffffff;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            padding: 40px;
+        }
+
+        .login-wrapper {
+            width: 100%;
+            max-width: 460px;
+        }
+
+        .mobile-logo {
+            display: none;
+        }
+
+        .login-header {
+            margin-bottom: 28px;
+        }
+
+        .login-header h2 {
+            font-size: 31px;
+            color: #111827;
+            margin-bottom: 8px;
+        }
+
+        .login-header p {
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+        /* ROLE SELECTOR */
+
+        .role-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+
+            padding: 5px;
+            background: #f3f4f6;
+            border-radius: 12px;
+
+            margin-bottom: 28px;
+        }
+
+        .role-btn {
+            border: none;
+            background: transparent;
+
+            padding: 12px 5px;
+
+            border-radius: 9px;
+
+            cursor: pointer;
+
+            font-family: inherit;
+            font-size: 12px;
+            font-weight: 600;
+
+            color: #6b7280;
+
+            transition: 0.25s;
+        }
+
+        .role-btn .role-icon {
+            display: block;
+            font-size: 18px;
+            margin-bottom: 5px;
+        }
+
+        .role-btn.active {
+            background: #ffffff;
+            color: #111827;
+
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+        }
+
+        .role-btn.active .role-icon {
+            color: #f59e0b;
+        }
+
+        /* FORM */
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: #374151;
+
+            margin-bottom: 8px;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+
+            color: #9ca3af;
+            font-size: 17px;
+        }
+
+        .form-input {
+            width: 100%;
+            height: 52px;
+
+            border: 1px solid #d1d5db;
+            border-radius: 10px;
+
+            padding: 0 45px;
+
+            font-family: inherit;
+            font-size: 14px;
+
+            outline: none;
+
+            transition: 0.2s;
+        }
+
+        .form-input:focus {
+            border-color: #f59e0b;
+
+            box-shadow:
+                0 0 0 3px rgba(245,158,11,0.12);
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+
+            border: none;
+            background: transparent;
+
+            cursor: pointer;
+
+            color: #9ca3af;
+            font-size: 17px;
+        }
+
+        /* OPTIONS */
+
+        .form-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            margin-bottom: 24px;
+        }
+
+        .remember {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+
+            font-size: 12px;
+            color: #6b7280;
+        }
+
+        .remember input {
+            accent-color: #f59e0b;
+        }
+
+        .forgot {
+            text-decoration: none;
+            color: #d97706;
+
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .forgot:hover {
+            text-decoration: underline;
+        }
+
+        /* LOGIN BUTTON */
+
+        .login-btn {
+            width: 100%;
+            height: 52px;
+
+            border: none;
+            border-radius: 10px;
+
+            background: #f59e0b;
+            color: #111827;
+
+            font-family: inherit;
+            font-size: 14px;
+            font-weight: 700;
+
+            cursor: pointer;
+
+            transition: 0.25s;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .login-btn:hover {
+            background: #d97706;
+            color: white;
+
+            transform: translateY(-1px);
+            box-shadow: 0 8px 20px rgba(245,158,11,0.25);
+        }
+
+        /* DIVIDER */
+
+        .divider {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+
+            margin: 25px 0;
+
+            color: #9ca3af;
+            font-size: 11px;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: "";
+            height: 1px;
+            background: #e5e7eb;
+            flex: 1;
+        }
+
+        /* GOOGLE */
+
+        .google-btn {
+            width: 100%;
+            height: 50px;
+
+            border: 1px solid #d1d5db;
+            border-radius: 10px;
+
+            background: white;
+
+            cursor: pointer;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+
+            font-family: inherit;
+            font-size: 13px;
+            font-weight: 600;
+
+            color: #374151;
+
+            transition: 0.2s;
+        }
+
+        .google-btn:hover {
+            background: #f9fafb;
+        }
+
+        .google-icon {
+            font-weight: 800;
+            font-size: 17px;
+        }
+
+        /* SIGN UP */
+
+        .signup {
+            text-align: center;
+            margin-top: 25px;
+
+            font-size: 13px;
+            color: #6b7280;
+        }
+
+        .signup a {
+            color: #d97706;
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        /* SECURITY */
+
+        .security {
+            margin-top: 25px;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 7px;
+
+            color: #9ca3af;
+            font-size: 11px;
+        }
+
+        /* MESSAGE */
+
+        .message {
+            display: none;
+
+            padding: 12px 15px;
+
+            border-radius: 8px;
+
+            margin-bottom: 18px;
+
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .message.success {
+            display: block;
+            background: #ecfdf5;
+            color: #047857;
+            border: 1px solid #a7f3d0;
+        }
+
+        .message.error {
+            display: block;
+            background: #fef2f2;
+            color: #b91c1c;
+            border: 1px solid #fecaca;
+        }
+
+        /* ================= RESPONSIVE ================= */
+
+        @media (max-width: 900px) {
+
+            .container {
+                display: block;
+            }
+
+            .left-section {
+                display: none;
+            }
+
+            .right-section {
+                width: 100%;
+                min-height: 100vh;
+                padding: 30px 20px;
+            }
+
+            .mobile-logo {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                gap: 10px;
+
+                margin-bottom: 35px;
+            }
+
+            .mobile-logo .logo-icon {
+                width: 40px;
+                height: 40px;
+            }
+
+            .mobile-logo .logo-text {
+                font-size: 24px;
+            }
+        }
+
+        @media (max-width: 420px) {
+
+            .role-btn {
+                font-size: 10px;
+            }
+
+            .role-btn .role-icon {
+                font-size: 16px;
+            }
+
+            .login-header h2 {
+                font-size: 27px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- ================= LEFT ================= -->
+
+    <section class="left-section">
+
+        <div class="logo">
+            <div class="logo-icon">S</div>
+            <div class="logo-text">SANKALP</div>
+        </div>
+
+        <div class="hero-content">
+
+            <span class="tag">CONSTRUCTION MANAGEMENT PLATFORM</span>
+
+            <h1>
+                Build smarter.<br>
+                Build <span>together.</span>
+            </h1>
+
+            <p>
+                Sankalp brings homeowners, contractors, engineers,
+                and administrators together on one powerful platform
+                to manage construction projects from planning to completion.
+            </p>
+
+            <div class="features">
+
+                <div class="feature">
+                    <div class="feature-icon">✓</div>
+                    <span>Project Tracking</span>
+                </div>
+
+                <div class="feature">
+                    <div class="feature-icon">₹</div>
+                    <span>Budget Management</span>
+                </div>
+
+                <div class="feature">
+                    <div class="feature-icon">⌂</div>
+                    <span>Real-time Updates</span>
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= RIGHT ================= -->
+
+    <section class="right-section">
+
+        <div class="login-wrapper">
+
+            <!-- Mobile Logo -->
+
+            <div class="mobile-logo">
+                <div class="logo-icon">S</div>
+                <div class="logo-text">SANKALP</div>
+            </div>
+
+
+            <!-- Header -->
+
+            <div class="login-header">
+
+                <h2>Welcome back</h2>
+
+                <p>
+                    Sign in to continue managing your construction projects.
+                </p>
+
+            </div>
+
+
+            <!-- Role Selection -->
+
+            <div class="role-container">
+
+                <button
+                    class="role-btn active"
+                    data-role="Admin"
+                    onclick="selectRole(this)"
+                >
+                    <span class="role-icon">⚙</span>
+                    Admin
+                </button>
+
+
+                <button
+                    class="role-btn"
+                    data-role="Customer"
+                    onclick="selectRole(this)"
+                >
+                    <span class="role-icon">⌂</span>
+                    Customer
+                </button>
+
+
+                <button
+                    class="role-btn"
+                    data-role="Professional"
+                    onclick="selectRole(this)"
+                >
+                    <span class="role-icon">🏗</span>
+                    Professional
+                </button>
+
+            </div>
+
+
+            <!-- Message -->
+
+            <div id="message" class="message"></div>
+
+
+            <!-- Login Form -->
+
+            <form id="loginForm">
+
+                <!-- Email -->
+
+                <div class="form-group">
+
+                    <label for="email">
+                        Email address
+                    </label>
+
+                    <div class="input-wrapper">
+
+                        <span class="input-icon">✉</span>
+
+                        <input
+                            type="email"
+                            id="email"
+                            class="form-input"
+                            placeholder="Enter your email"
+                            required
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <!-- Password -->
+
+                <div class="form-group">
+
+                    <label for="password">
+                        Password
+                    </label>
+
+                    <div class="input-wrapper">
+
+                        <span class="input-icon">🔒</span>
+
+                        <input
+                            type="password"
+                            id="password"
+                            class="form-input"
+                            placeholder="Enter your password"
+                            required
+                        >
+
+                        <button
+                            type="button"
+                            class="password-toggle"
+                            onclick="togglePassword()"
+                        >
+                            👁
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Options -->
+
+                <div class="form-options">
+
+                    <label class="remember">
+
+                        <input
+                            type="checkbox"
+                            id="remember"
+                        >
+
+                        Remember me
+
+                    </label>
+
+
+                    <a href="#" class="forgot">
+                        Forgot password?
+                    </a>
+
+                </div>
+
+
+                <!-- Login -->
+
+                <button
+                    type="submit"
+                    class="login-btn"
+                >
+
+                    <span>Sign in</span>
+
+                    <span>→</span>
+
+                </button>
+
+            </form>
+
+
+            <!-- Divider -->
+
+            <div class="divider">
+                OR
+            </div>
+
+
+            <!-- Google -->
+
+            <button
+                class="google-btn"
+                onclick="googleLogin()"
+            >
+
+                <span class="google-icon">G</span>
+
+                Continue with Google
+
+            </button>
+
+
+            <!-- Signup -->
+
+            <div class="signup">
+
+                Don't have a Sankalp account?
+
+                <a href="signup_page.html">
+                    Create account
+                </a>
+
+            </div>
+
+
+            <!-- Security -->
+
+            <div class="security">
+
+                🔒
+
+                <span>
+                    Your information is protected with secure authentication
+                </span>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</div>
+
+
+<script>
+
+    let selectedRole = "Admin";
+
+
+    /* ================= ROLE SELECTION ================= */
+
+    function selectRole(button) {
+
+        document.querySelectorAll(".role-btn").forEach(btn => {
+            btn.classList.remove("active");
+        });
+
+        button.classList.add("active");
+
+        selectedRole = button.dataset.role;
+
+        console.log("Selected Role:", selectedRole);
+    }
+
+
+    /* ================= PASSWORD ================= */
+
+    function togglePassword() {
+
+        const password =
+            document.getElementById("password");
+
+        const button =
+            document.querySelector(".password-toggle");
+
+        if (password.type === "password") {
+
+            password.type = "text";
+            button.textContent = "🙈";
+
+        } else {
+
+            password.type = "password";
+            button.textContent = "👁";
+
+        }
+    }
+
+
+    /* ================= LOGIN ================= */
+
+    const API_BASE = "http://127.0.0.1:5000/api";
+
+    document
+        .getElementById("loginForm")
+        .addEventListener("submit", async function(event) {
+
+            event.preventDefault();
+
+            const email =
+                document.getElementById("email").value.trim();
+
+            const password =
+                document.getElementById("password").value.trim();
+
+
+            if (!email || !password) {
+
+                showMessage(
+                    "Please enter your email and password.",
+                    "error"
+                );
+
+                return;
+            }
+
+            try {
+
+                const response = await fetch(`${API_BASE}/auth/login`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ email, password })
+                });
+
+                const data = await response.json();
+
+                if (!response.ok || !data.success) {
+                    showMessage(
+                        data.message || "Login failed.",
+                        "error"
+                    );
+                    return;
+                }
+
+                localStorage.setItem("token", data.token);
+                localStorage.setItem("user", JSON.stringify(data.user));
+
+                showMessage(
+                    `Login successful as ${data.user.role}. Redirecting...`,
+                    "success"
+                );
+
+                setTimeout(() => {
+                    window.location.href = "customer-dashboard.html";
+                }, 800);
+
+            } catch (error) {
+                console.error("Login request failed:", error);
+
+                showMessage(
+                    "Could not reach the server. Please try again.",
+                    "error"
+                );
+            }
+
+        });
+
+
+    /* ================= MESSAGE ================= */
+
+    function showMessage(text, type) {
+
+        const message =
+            document.getElementById("message");
+
+        message.textContent = text;
+
+        message.className =
+            "message " + type;
+
+    }
+
+
+    /* ================= GOOGLE ================= */
+
+    function googleLogin() {
+
+        showMessage(
+            "Google authentication will be connected to your backend.",
+            "success"
+        );
+
+    }
+
+</script>
+
+</body>
+</html>

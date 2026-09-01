@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>Start Project | Sankalp</title>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Inter, sans-serif;
+
+            background: #f5f7fa;
+
+            color: #17202a;
+        }
+
+        .navbar {
+
+            height: 75px;
+
+            background: white;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            padding: 0 7%;
+
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .logo {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+        }
+
+        .logo-box {
+
+            width: 40px;
+            height: 40px;
+
+            background: #f59e0b;
+
+            border-radius: 9px;
+
+            display: flex;
+
+            justify-content: center;
+            align-items: center;
+
+            font-weight: 800;
+
+            font-size: 20px;
+        }
+
+        .back {
+
+            border: none;
+
+            background: transparent;
+
+            cursor: pointer;
+
+            color: #6b7280;
+
+            font-weight: 600;
+        }
+
+        .container {
+
+            max-width: 900px;
+
+            margin: 50px auto;
+
+            padding: 0 20px;
+        }
+
+        .heading {
+
+            margin-bottom: 30px;
+        }
+
+        .heading span {
+
+            color: #d97706;
+
+            font-size: 12px;
+
+            font-weight: 800;
+
+            letter-spacing: 1.5px;
+        }
+
+        .heading h1 {
+
+            font-size: 38px;
+
+            margin: 8px 0;
+
+        }
+
+        .heading p {
+
+            color: #6b7280;
+        }
+
+        .form-card {
+
+            background: white;
+
+            border: 1px solid #e5e7eb;
+
+            border-radius: 16px;
+
+            padding: 35px;
+
+            box-shadow:
+                0 15px 35px rgba(0,0,0,0.05);
+        }
+
+        .form-section {
+
+            margin-bottom: 35px;
+        }
+
+        .form-section h2 {
+
+            font-size: 18px;
+
+            margin-bottom: 20px;
+
+        }
+
+        .grid {
+
+            display: grid;
+
+            grid-template-columns: 1fr 1fr;
+
+            gap: 20px;
+        }
+
+        .field {
+
+            margin-bottom: 18px;
+        }
+
+        label {
+
+            display: block;
+
+            font-size: 13px;
+
+            font-weight: 600;
+
+            margin-bottom: 8px;
+
+            color: #374151;
+        }
+
+        input,
+        select,
+        textarea {
+
+            width: 100%;
+
+            border: 1px solid #d1d5db;
+
+            border-radius: 9px;
+
+            padding: 13px;
+
+            font-family: inherit;
+
+            font-size: 14px;
+
+            outline: none;
+        }
+
+        textarea {
+
+            min-height: 110px;
+
+            resize: vertical;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+
+            border-color: #f59e0b;
+
+            box-shadow:
+                0 0 0 3px rgba(245,158,11,0.1);
+        }
+
+        .full {
+
+            grid-column: 1 / -1;
+        }
+
+        .submit {
+
+            width: 100%;
+
+            height: 52px;
+
+            border: none;
+
+            border-radius: 9px;
+
+            background: #f59e0b;
+
+            color: #111827;
+
+            font-size: 14px;
+
+            font-weight: 800;
+
+            cursor: pointer;
+
+            margin-top: 10px;
+        }
+
+        .submit:hover {
+
+            background: #d97706;
+
+            color: white;
+        }
+
+        .message {
+
+            display: none;
+
+            padding: 14px;
+
+            border-radius: 8px;
+
+            margin-bottom: 20px;
+
+            font-size: 13px;
+        }
+
+        .success {
+
+            display: block;
+
+            background: #ecfdf5;
+
+            color: #047857;
+
+            border: 1px solid #a7f3d0;
+        }
+
+        .error {
+
+            display: block;
+
+            background: #fef2f2;
+
+            color: #b91c1c;
+
+            border: 1px solid #fecaca;
+        }
+
+        @media(max-width:650px) {
+
+            .grid {
+
+                grid-template-columns: 1fr;
+
+            }
+
+            .full {
+
+                grid-column: auto;
+
+            }
+
+            .form-card {
+
+                padding: 22px;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<nav class="navbar">
+
+    <div class="logo">
+
+        <div class="logo-box">
+            S
+        </div>
+
+        <strong>SANKALP</strong>
+
+    </div>
+
+
+    <button
+        class="back"
+        onclick="history.back()">
+
+        ← Back
+
+    </button>
+
+</nav>
+
+
+<div class="container">
+
+
+    <div class="heading">
+
+        <span>
+            START YOUR PROJECT
+        </span>
+
+        <h1>
+            Tell us about your project.
+        </h1>
+
+        <p>
+            Provide some basic information about your
+            construction project. You can update these
+            details later from your dashboard.
+        </p>
+
+    </div>
+
+
+    <div
+        id="message"
+        class="message">
+    </div>
+
+
+    <form
+        class="form-card"
+        id="projectForm">
+
+
+        <!-- PROJECT -->
+
+        <div class="form-section">
+
+            <h2>
+                Project Information
+            </h2>
+
+
+            <div class="grid">
+
+
+                <div class="field">
+
+                    <label>
+                        Project Name *
+                    </label>
+
+                    <input
+                        type="text"
+                        id="projectName"
+                        placeholder="Example: My Dream Home"
+                        required>
+
+                </div>
+
+
+                <div class="field">
+
+                    <label>
+                        Project Type *
+                    </label>
+
+                    <select
+                        id="projectType"
+                        required>
+
+                        <option value="">
+                            Select project type
+                        </option>
+
+                        <option value="Residential House">
+                            Residential House
+                        </option>
+
+                        <option value="Apartment">
+                            Apartment
+                        </option>
+
+                        <option value="Villa">
+                            Villa
+                        </option>
+
+                        <option value="Renovation">
+                            Renovation
+                        </option>
+
+                        <option value="Commercial">
+                            Commercial Building
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="field">
+
+                    <label>
+                        Estimated Budget *
+                    </label>
+
+                    <input
+                        type="number"
+                        id="budget"
+                        placeholder="Example: 2500000"
+                        required>
+
+                </div>
+
+
+                <div class="field">
+
+                    <label>
+                        Expected Completion
+                    </label>
+
+                    <input
+                        type="date"
+                        id="completion">
+
+                </div>
+
+
+                <div class="field full">
+
+                    <label>
+                        Project Location *
+                    </label>
+
+                    <input
+                        type="text"
+                        id="location"
+                        placeholder="City / Area / Location"
+                        required>
+
+                </div>
+
+
+                <div class="field full">
+
+                    <label>
+                        Project Description
+                    </label>
+
+                    <textarea
+                        id="description"
+                        placeholder="Tell us about your construction requirements...">
+                    </textarea>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- CUSTOMER -->
+
+        <div class="form-section">
+
+            <h2>
+                Your Information
+            </h2>
+
+
+            <div class="grid">
+
+
+                <div class="field">
+
+                    <label>
+                        Full Name *
+                    </label>
+
+                    <input
+                        type="text"
+                        id="customerName"
+                        placeholder="Your full name"
+                        required>
+
+                </div>
+
+
+                <div class="field">
+
+                    <label>
+                        Email *
+                    </label>
+
+                    <input
+                        type="email"
+                        id="email"
+                        placeholder="your@email.com"
+                        required>
+
+                </div>
+
+
+                <div class="field">
+
+                    <label>
+                        Phone Number *
+                    </label>
+
+                    <input
+                        type="tel"
+                        id="phone"
+                        placeholder="+91 XXXXX XXXXX"
+                        required>
+
+                </div>
+
+
+                <div class="field">
+
+                    <label>
+                        Preferred Contact
+                    </label>
+
+                    <select id="contact">
+
+                        <option>
+                            Phone
+                        </option>
+
+                        <option>
+                            Email
+                        </option>
+
+                        <option>
+                            WhatsApp
+                        </option>
+
+                    </select>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <button
+            class="submit"
+            type="submit">
+
+            Create My Project →
+
+        </button>
+
+
+    </form>
+
+</div>
+
+
+<script>
+
+    const form =
+        document.getElementById("projectForm");
+
+
+    form.addEventListener("submit", function(event) {
+        event.preventDefault();
+
+        const project = {
+            projectName: document.getElementById("projectName").value,
+            projectType: document.getElementById("projectType").value,
+            budget: document.getElementById("budget").value,
+            completion: document.getElementById("completion").value,
+            location: document.getElementById("location").value,
+            description: document.getElementById("description").value,
+            customerName: document.getElementById("customerName").value,
+            email: document.getElementById("email").value,
+            phone: document.getElementById("phone").value,
+            contact: document.getElementById("contact").value
+        };
+
+        const projects = JSON.parse(
+            localStorage.getItem("sankalpProjects") || "[]"
+        );
+
+        projects.unshift({
+            project_name: project.projectName,
+            project_type: project.projectType,
+            budget: project.budget,
+            completion_date: project.completion,
+            location: project.location,
+            description: project.description,
+            customer_name: project.customerName,
+            email: project.email,
+            phone: project.phone,
+            preferred_contact: project.contact,
+            status: "Planning",
+            progress: 0
+        });
+
+        localStorage.setItem("sankalpProjects", JSON.stringify(projects));
+
+        showMessage(
+            "Project created successfully! Redirecting to your dashboard...",
+            "success"
+        );
+
+        form.reset();
+
+        setTimeout(() => {
+            window.location.href = "./customer-dashboard.html";
+        }, 1000);
+    });
+
+
+    function showMessage(text, type) {
+
+        const message =
+            document.getElementById("message");
+
+        message.textContent = text;
+
+        message.className =
+            "message " + type;
+
+    }
+
+</script>
+
+
+</body>
+
+</html>
