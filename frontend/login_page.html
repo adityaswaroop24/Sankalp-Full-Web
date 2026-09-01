@@ -183,6 +183,8 @@
         /* ROLE SELECTOR */
 
         .role-container {
+            position: relative;
+
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 8px;
@@ -194,7 +196,23 @@
             margin-bottom: 28px;
         }
 
+        .role-indicator {
+            position: absolute;
+            top: 5px;
+            height: calc(100% - 10px);
+
+            background: #ffffff;
+            border-radius: 9px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+
+            transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                        width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
         .role-btn {
+            position: relative;
+            z-index: 1;
+
             border: none;
             background: transparent;
 
@@ -210,20 +228,19 @@
 
             color: #6b7280;
 
-            transition: 0.25s;
+            transition: color 0.25s ease;
         }
 
         .role-btn .role-icon {
             display: block;
             font-size: 18px;
             margin-bottom: 5px;
+
+            transition: color 0.25s ease;
         }
 
         .role-btn.active {
-            background: #ffffff;
             color: #111827;
-
-            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
         }
 
         .role-btn.active .role-icon {
@@ -620,6 +637,8 @@
 
             <div class="role-container">
 
+                <div class="role-indicator" id="roleIndicator"></div>
+
                 <button
                     class="role-btn active"
                     data-role="Admin"
@@ -828,8 +847,26 @@
 
         selectedRole = button.dataset.role;
 
+        moveRoleIndicator(button);
+
         console.log("Selected Role:", selectedRole);
     }
+
+    function moveRoleIndicator(button) {
+
+        const indicator = document.getElementById("roleIndicator");
+
+        indicator.style.left = button.offsetLeft + "px";
+        indicator.style.width = button.offsetWidth + "px";
+    }
+
+    window.addEventListener("load", () => {
+        moveRoleIndicator(document.querySelector(".role-btn.active"));
+    });
+
+    window.addEventListener("resize", () => {
+        moveRoleIndicator(document.querySelector(".role-btn.active"));
+    });
 
 
     /* ================= PASSWORD ================= */
