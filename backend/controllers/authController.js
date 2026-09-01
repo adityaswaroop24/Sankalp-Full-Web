@@ -56,7 +56,7 @@ const signup = async (req, res) => {
 
 const login = async (req, res) => {
     try {
-        const { email, password } = req.body;
+        const { email, password, role } = req.body;
 
         if (!email || !password) {
             return res.status(400).json({
@@ -82,6 +82,13 @@ const login = async (req, res) => {
             return res.status(401).json({
                 success: false,
                 message: "Invalid email or password."
+            });
+        }
+
+        if (role && role !== user.role) {
+            return res.status(403).json({
+                success: false,
+                message: `This account is registered as ${user.role}, not ${role}. Select "${user.role}" above and try again.`
             });
         }
 
