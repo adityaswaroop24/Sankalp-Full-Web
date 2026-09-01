@@ -909,8 +909,14 @@
                     "success"
                 );
 
+                const dashboards = {
+                    Admin: "admin-dashboard.html",
+                    Customer: "customer-dashboard.html",
+                    Professional: "professional-dashboard.html"
+                };
+
                 setTimeout(() => {
-                    window.location.href = "customer-dashboard.html";
+                    window.location.href = dashboards[data.user.role] || "customer-dashboard.html";
                 }, 800);
 
             } catch (error) {

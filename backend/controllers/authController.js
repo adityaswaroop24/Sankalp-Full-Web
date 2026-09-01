@@ -114,7 +114,31 @@ const login = async (req, res) => {
     }
 };
 
+const getAllUsers = (req, res) => {
+    try {
+        const users = db
+            .prepare(
+                "SELECT id, name, email, role, created_at FROM users ORDER BY created_at DESC"
+            )
+            .all();
+
+        res.json({
+            success: true,
+            users
+        });
+
+    } catch (error) {
+        console.error("Get users error:", error);
+
+        res.status(500).json({
+            success: false,
+            message: "Failed to fetch users."
+        });
+    }
+};
+
 module.exports = {
     signup,
-    login
+    login,
+    getAllUsers
 };
