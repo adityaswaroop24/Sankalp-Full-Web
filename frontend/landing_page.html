@@ -601,6 +601,21 @@
             font-size: 12px;
         }
 
+        .visit-counter {
+            text-align: center;
+
+            color: #64748b;
+
+            font-size: 12px;
+
+            margin-top: 10px;
+        }
+
+        .visit-counter span {
+            color: #f59e0b;
+            font-weight: 700;
+        }
+
         /* MOBILE */
 
         @media(max-width:900px) {
@@ -1358,6 +1373,8 @@
 
     </div>
 
+    <div class="visit-counter" id="visitCounter"></div>
+
 </footer>
 
 
@@ -1378,6 +1395,13 @@
 
 
     fetch("http://127.0.0.1:5050/api/visits", { method: "POST" })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                document.getElementById("visitCounter").innerHTML =
+                    `<span>${data.total.toLocaleString("en-IN")}</span> visits so far`;
+            }
+        })
         .catch(error => console.error("Visit tracking failed:", error));
 
 </script>
