@@ -602,18 +602,31 @@
         }
 
         .visit-counter {
-            text-align: center;
-
-            color: #64748b;
-
-            font-size: 12px;
-
-            margin-top: 10px;
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
         }
 
-        .visit-counter span {
+        .visit-counter-box {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+
+            border: 1px solid #f59e0b;
+            border-radius: 30px;
+
+            padding: 10px 22px;
+
+            color: #cbd5e1;
+            font-size: 13px;
+
+            background: rgba(245,158,11,0.08);
+        }
+
+        .visit-counter-box span {
             color: #f59e0b;
-            font-weight: 700;
+            font-weight: 800;
+            font-size: 16px;
         }
 
         /* MOBILE */
@@ -1398,8 +1411,11 @@
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                document.getElementById("visitCounter").innerHTML =
-                    `<span>${data.total.toLocaleString("en-IN")}</span> visits so far`;
+                document.getElementById("visitCounter").innerHTML = `
+                    <div class="visit-counter-box">
+                        <span>${data.total.toLocaleString("en-IN")}</span> visits so far
+                    </div>
+                `;
             }
         })
         .catch(error => console.error("Visit tracking failed:", error));
