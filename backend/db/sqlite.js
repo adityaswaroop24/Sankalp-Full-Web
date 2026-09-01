@@ -17,6 +17,13 @@ db.exec(`
     )
 `);
 
+db.exec(`
+    CREATE TABLE IF NOT EXISTS visits (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        visited_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+    )
+`);
+
 console.log(`✅ SQLite (customer login) ready at ${dbPath}`);
 
 module.exports = db;

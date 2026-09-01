@@ -1376,6 +1376,10 @@
 
     }
 
+
+    fetch("http://127.0.0.1:5050/api/visits", { method: "POST" })
+        .catch(error => console.error("Visit tracking failed:", error));
+
 </script>
 
 </body>

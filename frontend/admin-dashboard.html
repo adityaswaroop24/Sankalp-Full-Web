@@ -118,7 +118,7 @@
 
         .stats {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
+            grid-template-columns: repeat(5, 1fr);
             gap: 18px;
             margin: 30px 0;
         }
@@ -255,6 +255,11 @@
         <div class="stat-card">
             <div class="value" id="statProfessionals">0</div>
             <div class="label">Professionals</div>
+        </div>
+
+        <div class="stat-card">
+            <div class="value" id="statVisits">-</div>
+            <div class="label">Total Site Visits</div>
         </div>
     </div>
 
@@ -428,8 +433,25 @@
         }
     }
 
+    async function loadVisitCount() {
+        try {
+            const response = await fetch(`${API_BASE}/visits`, {
+                headers: { "Authorization": `Bearer ${token}` }
+            });
+
+            const data = await response.json();
+
+            document.getElementById("statVisits").textContent =
+                (response.ok && data.success) ? data.total.toLocaleString("en-IN") : "-";
+
+        } catch (error) {
+            console.error("Failed to load visit count:", error);
+        }
+    }
+
     loadProjects();
     loadUsers();
+    loadVisitCount();
 
 </script>
 
