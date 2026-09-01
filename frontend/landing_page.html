@@ -113,11 +113,20 @@
             cursor: pointer;
             font-weight: 600;
             font-family: inherit;
+
+            transition: transform 0.2s ease, box-shadow 0.2s ease,
+                        background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
         }
 
         .login-btn {
             border: 1px solid #d1d5db;
             background: white;
+        }
+
+        .login-btn:hover {
+            border-color: #f59e0b;
+            color: #d97706;
+            transform: translateY(-2px);
         }
 
         .start-btn {
@@ -129,6 +138,13 @@
         .start-btn:hover {
             background: #d97706;
             color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(245,158,11,0.35);
+        }
+
+        .login-btn:active,
+        .start-btn:active {
+            transform: translateY(0) scale(0.96);
         }
 
         /* HERO */
@@ -202,6 +218,12 @@
             gap: 12px;
         }
 
+        .primary,
+        .secondary {
+            transition: transform 0.2s ease, box-shadow 0.2s ease,
+                        background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+        }
+
         .primary {
             padding: 15px 25px;
 
@@ -216,6 +238,13 @@
             cursor: pointer;
         }
 
+        .primary:hover {
+            background: #d97706;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 24px rgba(245,158,11,0.35);
+        }
+
         .secondary {
             padding: 15px 25px;
 
@@ -227,6 +256,17 @@
             cursor: pointer;
 
             font-weight: 600;
+        }
+
+        .secondary:hover {
+            border-color: #f59e0b;
+            color: #d97706;
+            transform: translateY(-2px);
+        }
+
+        .primary:active,
+        .secondary:active {
+            transform: translateY(0) scale(0.96);
         }
 
         /* STATS */
