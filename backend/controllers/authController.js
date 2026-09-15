@@ -2,8 +2,16 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
 
-const db = require("../db/sqlite");
+const User = require("../models/User");
 const { sendResetEmail } = require("../utils/mailer");
+
+const toPublicUser = (user) => ({
+    id: user._id.toString(),
+    name: user.name,
+    email: user.email,
+    role: user.role,
+    created_at: user.created_at
+});
 
 const signup = async (req, res) => {
     try {
@@ -16,9 +24,7 @@ const signup = async (req, res) => {
             });
         }
 
-        const existing = db
-            .prepare("SELECT id FROM users WHERE email = ?")
-            .get(email);
+        const existing = await User.findOne({ email });
 
         if (existing) {
             return res.status(409).json({
@@ -29,20 +35,17 @@ const signup = async (req, res) => {
 
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        const result = db
-            .prepare(
-                "INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)"
-            )
-            .run(name, email, hashedPassword, role || "Customer");
-
-        const user = db
-            .prepare("SELECT id, name, email, role, created_at FROM users WHERE id = ?")
-            .get(result.lastInsertRowid);
+        const user = await User.create({
+            name,
+            email,
+            password: hashedPassword,
+            role: role || "Customer"
+        });
 
         res.status(201).json({
             success: true,
             message: "Account created successfully!",
-            user
+            user: toPublicUser(user)
         });
 
     } catch (error) {
@@ -67,9 +70,7 @@ const login = async (req, res) => {
             });
         }
 
-        const user = db
-            .prepare("SELECT * FROM users WHERE email = ?")
-            .get(email);
+        const user = await User.findOne({ email });
 
         if (!user) {
             return res.status(401).json({
@@ -95,7 +96,7 @@ const login = async (req, res) => {
         }
 
         const token = jwt.sign(
-            { id: user.id, email: user.email, role: user.role },
+            { id: user._id.toString(), email: user.email, role: user.role },
             process.env.JWT_SECRET,
             { expiresIn: "7d" }
         );
@@ -105,7 +106,7 @@ const login = async (req, res) => {
             message: "Login successful!",
             token,
             user: {
-                id: user.id,
+                id: user._id.toString(),
                 name: user.name,
                 email: user.email,
                 role: user.role
@@ -123,17 +124,13 @@ const login = async (req, res) => {
     }
 };
 
-const getAllUsers = (req, res) => {
+const getAllUsers = async (req, res) => {
     try {
-        const users = db
-            .prepare(
-                "SELECT id, name, email, role, created_at FROM users ORDER BY created_at DESC"
-            )
-            .all();
+        const users = await User.find().sort({ created_at: -1 });
 
         res.json({
             success: true,
-            users
+            users: users.map(toPublicUser)
         });
 
     } catch (error) {
@@ -162,20 +159,17 @@ const forgotPassword = async (req, res) => {
             message: "If an account exists for that email, a reset link has been sent."
         };
 
-        const user = db
-            .prepare("SELECT id, email FROM users WHERE email = ?")
-            .get(email);
+        const user = await User.findOne({ email });
 
         if (!user) {
             return res.json(genericResponse);
         }
 
         const token = crypto.randomBytes(32).toString("hex");
-        const expiresAt = new Date(Date.now() + 60 * 60 * 1000).toISOString();
 
-        db.prepare(
-            "UPDATE users SET reset_token = ?, reset_token_expires = ? WHERE id = ?"
-        ).run(token, expiresAt, user.id);
+        user.resetToken = token;
+        user.resetTokenExpires = new Date(Date.now() + 60 * 60 * 1000);
+        await user.save();
 
         const frontendUrl = process.env.FRONTEND_URL || "http://127.0.0.1:5500";
         const resetLink = `${frontendUrl}/reset-password.html?token=${token}`;
@@ -209,22 +203,19 @@ const resetPassword = async (req, res) => {
             });
         }
 
-        const user = db
-            .prepare("SELECT id, reset_token_expires FROM users WHERE reset_token = ?")
-            .get(token);
+        const user = await User.findOne({ resetToken: token });
 
-        if (!user || new Date(user.reset_token_expires) < new Date()) {
+        if (!user || !user.resetTokenExpires || user.resetTokenExpires < new Date()) {
             return res.status(400).json({
                 success: false,
                 message: "This reset link is invalid or has expired. Please request a new one."
             });
         }
 
-        const hashedPassword = await bcrypt.hash(newPassword, 10);
-
-        db.prepare(
-            "UPDATE users SET password = ?, reset_token = NULL, reset_token_expires = NULL WHERE id = ?"
-        ).run(hashedPassword, user.id);
+        user.password = await bcrypt.hash(newPassword, 10);
+        user.resetToken = null;
+        user.resetTokenExpires = null;
+        await user.save();
 
         res.json({
             success: true,

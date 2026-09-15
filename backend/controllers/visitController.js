@@ -1,12 +1,10 @@
-const db = require("../db/sqlite");
+const Visit = require("../models/Visit");
 
-const recordVisit = (req, res) => {
+const recordVisit = async (req, res) => {
     try {
-        db.prepare("INSERT INTO visits DEFAULT VALUES").run();
+        await Visit.create({});
 
-        const { total } = db
-            .prepare("SELECT COUNT(*) AS total FROM visits")
-            .get();
+        const total = await Visit.countDocuments();
 
         res.status(201).json({
             success: true,
@@ -23,11 +21,9 @@ const recordVisit = (req, res) => {
     }
 };
 
-const getVisitCount = (req, res) => {
+const getVisitCount = async (req, res) => {
     try {
-        const { total } = db
-            .prepare("SELECT COUNT(*) AS total FROM visits")
-            .get();
+        const total = await Visit.countDocuments();
 
         res.json({
             success: true,
