@@ -7,6 +7,7 @@ const connectMongo = require("./db/mongo");
 const projectRoutes = require("./routes/projects");
 const authRoutes = require("./routes/auth");
 const visitRoutes = require("./routes/visits");
+const aiRoutes = require("./routes/ai");
 
 const app = express();
 
@@ -16,6 +17,7 @@ app.use(express.json());
 app.use("/api/projects", projectRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/visits", visitRoutes);
+app.use("/api/ai", aiRoutes);
 
 app.get("/", (req, res) => {
     res.json({

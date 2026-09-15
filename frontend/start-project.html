@@ -287,6 +287,96 @@
             border: 1px solid #fecaca;
         }
 
+        .ai-box {
+
+            background: #fffbeb;
+
+            border: 1px solid #fde68a;
+
+            border-radius: 12px;
+
+            padding: 20px;
+
+            margin-bottom: 30px;
+        }
+
+        .ai-box h3 {
+
+            font-size: 14px;
+
+            margin-bottom: 6px;
+
+            color: #92400e;
+        }
+
+        .ai-box p {
+
+            font-size: 13px;
+
+            color: #92400e;
+
+            margin-bottom: 14px;
+        }
+
+        .ai-box textarea {
+
+            background: white;
+
+            margin-bottom: 12px;
+        }
+
+        .ai-btn {
+
+            border: none;
+
+            border-radius: 8px;
+
+            background: #f59e0b;
+
+            color: #111827;
+
+            padding: 11px 18px;
+
+            font-family: inherit;
+
+            font-size: 13px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+        }
+
+        .ai-btn:hover {
+
+            background: #d97706;
+
+            color: white;
+        }
+
+        .ai-btn:disabled {
+
+            opacity: 0.6;
+
+            cursor: not-allowed;
+        }
+
+        .ai-status {
+
+            font-size: 12px;
+
+            margin-top: 10px;
+        }
+
+        .ai-status.error {
+
+            color: #b91c1c;
+        }
+
+        .ai-status.success {
+
+            color: #047857;
+        }
+
         @media(max-width:650px) {
 
             .grid {
@@ -382,6 +472,20 @@
                 Project Information
             </h2>
 
+            <div class="ai-box">
+                <h3>✨ Not sure where to start?</h3>
+                <p>Describe your project idea in your own words, and AI will suggest a project type, estimated budget, and a polished description.</p>
+
+                <textarea
+                    id="aiPrompt"
+                    placeholder="Example: I want to build a 3 bedroom house in Hyderabad with a modern look, around 2000 sq ft"></textarea>
+
+                <button type="button" class="ai-btn" id="aiBtn" onclick="getAiSuggestions()">
+                    Get AI Suggestions
+                </button>
+
+                <div id="aiStatus" class="ai-status"></div>
+            </div>
 
             <div class="grid">
 
@@ -602,6 +706,58 @@
 
 
 <script>
+
+    const API_BASE = "https://sankalp-full-web.onrender.com/api";
+
+    async function getAiSuggestions() {
+
+        const promptText = document.getElementById("aiPrompt").value.trim();
+        const aiBtn = document.getElementById("aiBtn");
+        const aiStatus = document.getElementById("aiStatus");
+
+        if (!promptText) {
+            aiStatus.textContent = "Please describe your project idea first.";
+            aiStatus.className = "ai-status error";
+            return;
+        }
+
+        aiBtn.disabled = true;
+        aiBtn.textContent = "Thinking...";
+        aiStatus.textContent = "";
+        aiStatus.className = "ai-status";
+
+        try {
+
+            const response = await fetch(`${API_BASE}/ai/project-suggestions`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ prompt: promptText })
+            });
+
+            const data = await response.json();
+
+            if (!response.ok || !data.success) {
+                aiStatus.textContent = data.message || "Failed to generate suggestions.";
+                aiStatus.className = "ai-status error";
+                return;
+            }
+
+            document.getElementById("projectType").value = data.suggestion.projectType;
+            document.getElementById("budget").value = data.suggestion.estimatedBudget;
+            document.getElementById("description").value = data.suggestion.description;
+
+            aiStatus.textContent = "Suggestions filled in below — feel free to edit them.";
+            aiStatus.className = "ai-status success";
+
+        } catch (error) {
+            console.error("AI suggestion request failed:", error);
+            aiStatus.textContent = "Could not reach the server. Please try again.";
+            aiStatus.className = "ai-status error";
+        } finally {
+            aiBtn.disabled = false;
+            aiBtn.textContent = "Get AI Suggestions";
+        }
+    }
 
     const form =
         document.getElementById("projectForm");
