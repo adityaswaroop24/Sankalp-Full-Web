@@ -24,6 +24,15 @@ const signup = async (req, res) => {
             });
         }
 
+        const allowedRoles = ["Customer", "Professional"];
+
+        if (role && !allowedRoles.includes(role)) {
+            return res.status(403).json({
+                success: false,
+                message: "Admin accounts cannot be created through public signup."
+            });
+        }
+
         const existing = await User.findOne({ email });
 
         if (existing) {
