@@ -466,6 +466,8 @@
 
 <script>
 
+    const API_BASE = "https://sankalp-full-web.onrender.com/api";
+
     const user = JSON.parse(localStorage.getItem("user") || "null");
     const token = localStorage.getItem("token");
 
@@ -488,17 +490,32 @@
     document.getElementById("userName").textContent = user ? user.name : "";
     document.getElementById("welcomeHeading").textContent = user ? `Welcome back, ${user.name}` : "Welcome back";
 
-    function loadStats() {
-        const projects = JSON.parse(localStorage.getItem("sankalpProjects") || "[]");
+    async function loadStats() {
+        try {
+            const response = await fetch(`${API_BASE}/projects/mine`, {
+                headers: { "Authorization": `Bearer ${token}` }
+            });
 
-        document.getElementById("statTotal").textContent = projects.length;
-        document.getElementById("statProgress").textContent =
-            projects.filter(p => p.status === "In Progress").length;
-        document.getElementById("statCompleted").textContent =
-            projects.filter(p => p.status === "Completed").length;
+            const data = await response.json();
 
-        const totalBudget = projects.reduce((sum, p) => sum + (Number(p.budget) || 0), 0);
-        document.getElementById("statBudget").textContent = `₹${totalBudget.toLocaleString("en-IN")}`;
+            if (!response.ok || !data.success) {
+                return;
+            }
+
+            const projects = data.projects;
+
+            document.getElementById("statTotal").textContent = projects.length;
+            document.getElementById("statProgress").textContent =
+                projects.filter(p => p.status === "In Progress").length;
+            document.getElementById("statCompleted").textContent =
+                projects.filter(p => p.status === "Completed").length;
+
+            const totalBudget = projects.reduce((sum, p) => sum + (Number(p.budget) || 0), 0);
+            document.getElementById("statBudget").textContent = `₹${totalBudget.toLocaleString("en-IN")}`;
+
+        } catch (error) {
+            console.error("Failed to load project stats:", error);
+        }
     }
 
     loadStats();

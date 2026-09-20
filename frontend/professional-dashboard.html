@@ -540,9 +540,30 @@
         }
     }
 
-    function loadProjects() {
-        const projects = JSON.parse(localStorage.getItem("sankalpProjects") || "[]");
+    async function loadProjects() {
         const area = document.getElementById("projectsArea");
+
+        let projects = [];
+
+        try {
+            const response = await fetch(`${API_BASE}/projects/all`, {
+                headers: { "Authorization": `Bearer ${token}` }
+            });
+
+            const data = await response.json();
+
+            if (!response.ok || !data.success) {
+                area.innerHTML = `<div class="empty"><p>${data.message || "Failed to load projects."}</p></div>`;
+                return;
+            }
+
+            projects = data.projects;
+
+        } catch (error) {
+            console.error("Failed to load projects:", error);
+            area.innerHTML = `<div class="empty"><p>Could not reach the server.</p></div>`;
+            return;
+        }
 
         document.getElementById("statTotal").textContent = projects.length;
 

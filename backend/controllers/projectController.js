@@ -1,4 +1,21 @@
-const pool = require("../db/database");
+const Project = require("../models/Project");
+
+const toPublicProject = (project) => ({
+    id: project._id.toString(),
+    project_name: project.project_name,
+    project_type: project.project_type,
+    budget: project.budget,
+    completion_date: project.completion_date,
+    location: project.location,
+    description: project.description,
+    customer_name: project.customer_name,
+    email: project.email,
+    phone: project.phone,
+    preferred_contact: project.preferred_contact,
+    status: project.status,
+    progress: project.progress,
+    created_at: project.created_at
+});
 
 const createProject = async (req, res) => {
     try {
@@ -22,41 +39,24 @@ const createProject = async (req, res) => {
             });
         }
 
-        const result = await pool.query(
-            `
-            INSERT INTO projects (
-                project_name,
-                project_type,
-                budget,
-                completion_date,
-                location,
-                description,
-                customer_name,
-                email,
-                phone,
-                preferred_contact
-            )
-            VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10)
-            RETURNING *
-            `,
-            [
-                projectName,
-                projectType,
-                budget || null,
-                completion || null,
-                location,
-                description || null,
-                customerName || null,
-                email || null,
-                phone || null,
-                contact || null
-            ]
-        );
+        const project = await Project.create({
+            customerId: req.user.id,
+            project_name: projectName,
+            project_type: projectType,
+            budget: budget ? Number(budget) : null,
+            completion_date: completion || null,
+            location,
+            description: description || null,
+            customer_name: customerName || null,
+            email: email || null,
+            phone: phone || null,
+            preferred_contact: contact || null
+        });
 
         res.status(201).json({
             success: true,
             message: "Project created successfully!",
-            project: result.rows[0]
+            project: toPublicProject(project)
         });
 
     } catch (error) {
@@ -64,25 +64,45 @@ const createProject = async (req, res) => {
 
         res.status(500).json({
             success: false,
-            message: "Failed to create project.",
-            error: error.message
+            message: "Failed to create project."
         });
     }
 };
 
-const getProjects = async (req, res) => {
+const getMyProjects = async (req, res) => {
     try {
-        const result = await pool.query(
-            "SELECT * FROM projects ORDER BY created_at DESC"
-        );
+        const projects = await Project
+            .find({ customerId: req.user.id })
+            .sort({ created_at: -1 });
 
         res.json({
             success: true,
-            projects: result.rows
+            projects: projects.map(toPublicProject)
         });
 
     } catch (error) {
-        console.error("Get projects error:", error);
+        console.error("Get my projects error:", error);
+
+        res.status(500).json({
+            success: false,
+            message: "Failed to fetch projects."
+        });
+    }
+};
+
+const getAllProjects = async (req, res) => {
+    try {
+        const projects = await Project
+            .find()
+            .sort({ created_at: -1 });
+
+        res.json({
+            success: true,
+            projects: projects.map(toPublicProject)
+        });
+
+    } catch (error) {
+        console.error("Get all projects error:", error);
 
         res.status(500).json({
             success: false,
@@ -93,5 +113,6 @@ const getProjects = async (req, res) => {
 
 module.exports = {
     createProject,
-    getProjects
+    getMyProjects,
+    getAllProjects
 };

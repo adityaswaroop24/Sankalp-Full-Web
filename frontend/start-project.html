@@ -709,6 +709,12 @@
 
     const API_BASE = "https://sankalp-full-web.onrender.com/api";
 
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+        window.location.href = "login_page.html";
+    }
+
     async function getAiSuggestions() {
 
         const promptText = document.getElementById("aiPrompt").value.trim();
@@ -763,8 +769,10 @@
         document.getElementById("projectForm");
 
 
-    form.addEventListener("submit", function(event) {
+    form.addEventListener("submit", async function(event) {
         event.preventDefault();
+
+        const submitBtn = form.querySelector(".submit");
 
         const project = {
             projectName: document.getElementById("projectName").value,
@@ -779,37 +787,46 @@
             contact: document.getElementById("contact").value
         };
 
-        const projects = JSON.parse(
-            localStorage.getItem("sankalpProjects") || "[]"
-        );
+        submitBtn.disabled = true;
+        submitBtn.textContent = "Creating...";
 
-        projects.unshift({
-            project_name: project.projectName,
-            project_type: project.projectType,
-            budget: project.budget,
-            completion_date: project.completion,
-            location: project.location,
-            description: project.description,
-            customer_name: project.customerName,
-            email: project.email,
-            phone: project.phone,
-            preferred_contact: project.contact,
-            status: "Planning",
-            progress: 0
-        });
+        try {
 
-        localStorage.setItem("sankalpProjects", JSON.stringify(projects));
+            const response = await fetch(`${API_BASE}/projects`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
+                },
+                body: JSON.stringify(project)
+            });
 
-        showMessage(
-            "Project created successfully! Redirecting to your dashboard...",
-            "success"
-        );
+            const data = await response.json();
 
-        form.reset();
+            if (!response.ok || !data.success) {
+                showMessage(data.message || "Failed to create project.", "error");
+                submitBtn.disabled = false;
+                submitBtn.textContent = "Create My Project →";
+                return;
+            }
 
-        setTimeout(() => {
-            window.location.href = "./progress-updates.html";
-        }, 1000);
+            showMessage(
+                "Project created successfully! Redirecting to your dashboard...",
+                "success"
+            );
+
+            form.reset();
+
+            setTimeout(() => {
+                window.location.href = "./progress-updates.html";
+            }, 1000);
+
+        } catch (error) {
+            console.error("Create project request failed:", error);
+            showMessage("Could not reach the server. Please try again.", "error");
+            submitBtn.disabled = false;
+            submitBtn.textContent = "Create My Project →";
+        }
     });
 
 
