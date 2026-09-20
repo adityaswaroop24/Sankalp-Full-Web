@@ -17,128 +17,82 @@
             box-sizing: border-box;
         }
 
-        :root {
-            --bg-main: #f5f6f8;
-            --bg-sidebar: #ffffff;
-            --bg-card: #ffffff;
-            --border: #e5e7eb;
-            --text-main: #111827;
-            --text-muted: #6b7280;
-            --amber: #f59e0b;
-            --amber-dark: #d97706;
-        }
-
         body {
             font-family: "Inter", sans-serif;
-            background: var(--bg-main);
-            color: var(--text-main);
+            background: #f5f6f8;
+            color: #111827;
             min-height: 100vh;
-            display: flex;
         }
 
-        /* SIDEBAR */
+        /* NAVBAR */
 
-        .sidebar {
-            width: 260px;
-            flex-shrink: 0;
-            background: var(--bg-sidebar);
-            border-right: 1px solid var(--border);
-            min-height: 100vh;
+        .navbar {
+            height: 72px;
+            background: white;
+            border-bottom: 1px solid #e5e7eb;
+
             display: flex;
-            flex-direction: column;
-            padding: 26px 18px;
-            position: sticky;
-            top: 0;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 7%;
         }
 
-        .brand {
+        .logo {
             display: flex;
             align-items: center;
             gap: 10px;
-            margin-bottom: 4px;
-            padding: 0 6px;
         }
 
-        .brand-icon {
+        .logo-box {
             width: 38px;
             height: 38px;
-            background: var(--amber);
+            background: #f59e0b;
             border-radius: 9px;
+
             display: flex;
-            align-items: center;
             justify-content: center;
+            align-items: center;
+
             font-weight: 800;
             color: #111827;
-            font-size: 18px;
         }
 
-        .brand-text strong {
-            display: block;
-            font-size: 17px;
+        .logo strong {
+            font-size: 18px;
             letter-spacing: 0.5px;
         }
 
-        .brand-text span {
-            display: block;
-            font-size: 9px;
-            letter-spacing: 1px;
-            color: var(--text-muted);
+        .role-tag {
+            font-size: 11px;
             font-weight: 700;
+            color: #d97706;
+            background: rgba(245,158,11,0.12);
+            padding: 4px 10px;
+            border-radius: 20px;
+            margin-left: 8px;
         }
 
-        .nav-list {
-            list-style: none;
-            margin-top: 30px;
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-            flex: 1;
-        }
-
-        .nav-list a {
+        .nav-right {
             display: flex;
             align-items: center;
-            gap: 12px;
-            padding: 11px 14px;
-            border-radius: 10px;
-            color: var(--text-muted);
-            text-decoration: none;
+            gap: 18px;
+        }
+
+        .user-name {
             font-size: 14px;
             font-weight: 600;
-            border: 1px solid transparent;
-            transition: 0.15s ease;
-        }
-
-        .nav-list a:hover {
-            color: var(--text-main);
-            background: rgba(245,158,11,0.08);
-        }
-
-        .nav-list a.active {
-            color: var(--amber);
-            background: rgba(245,158,11,0.12);
-            border-color: rgba(245,158,11,0.35);
-        }
-
-        .nav-icon {
-            font-size: 16px;
-            width: 20px;
-            text-align: center;
+            color: #374151;
         }
 
         .logout-btn {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            justify-content: center;
             border: 1px solid #d1d5db;
             background: white;
-            color: #374151;
-            border-radius: 10px;
-            padding: 11px 14px;
+            border-radius: 8px;
+            padding: 9px 16px;
             font-family: inherit;
-            font-size: 14px;
-            font-weight: 700;
+            font-size: 13px;
+            font-weight: 600;
+            color: #374151;
             cursor: pointer;
         }
 
@@ -148,166 +102,128 @@
             color: #b91c1c;
         }
 
-        /* MAIN */
+        /* HERO */
 
-        .main {
-            flex: 1;
-            padding: 40px 5%;
-            min-width: 0;
+        .hero {
+            background: #17202a;
+            color: white;
+            padding: 45px 7%;
         }
 
-        .topbar {
+        .hero-inner {
+            max-width: 1200px;
+            margin: 0 auto;
             display: flex;
             justify-content: space-between;
-            align-items: flex-start;
+            align-items: flex-end;
             gap: 20px;
-            margin-bottom: 34px;
             flex-wrap: wrap;
         }
 
-        .topbar h1 {
-            font-size: 30px;
-            letter-spacing: 0.5px;
-            margin-bottom: 6px;
+        .hero-tag {
+            display: inline-block;
+            background: rgba(245,158,11,0.15);
+            border: 1px solid rgba(245,158,11,0.4);
+            color: #fbbf24;
+            padding: 6px 14px;
+            border-radius: 30px;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 14px;
         }
 
-        .topbar p {
-            color: var(--text-muted);
+        .hero h1 {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        .hero p {
+            color: #cbd5e1;
             font-size: 14px;
         }
 
-        .topbar-actions {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            position: relative;
-        }
-
-        .icon-btn {
-            width: 42px;
-            height: 42px;
-            border-radius: 50%;
-            border: 1px solid var(--border);
-            background: var(--bg-card);
-            color: var(--text-main);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 16px;
-            cursor: pointer;
-            position: relative;
-        }
-
-        .icon-btn:hover {
-            border-color: var(--amber);
-        }
-
-        .notif-dot {
-            position: absolute;
-            top: 8px;
-            right: 8px;
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: #ef4444;
-        }
-
-        .dropdown-panel {
-            position: absolute;
-            top: 52px;
-            right: 0;
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            padding: 12px;
-            font-size: 13px;
-            color: var(--text-muted);
-            width: 210px;
-            display: none;
-            z-index: 5;
-            box-shadow: 0 12px 28px rgba(0,0,0,0.10);
-        }
-
-        .dropdown-panel.open {
-            display: block;
-        }
-
-        .user-chip {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            border: 1px solid var(--border);
-            background: var(--bg-card);
-            border-radius: 30px;
-            padding: 6px 14px 6px 6px;
-            cursor: pointer;
-        }
-
-        .avatar {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            background: var(--amber);
+        .hero-cta {
+            background: #f59e0b;
             color: #111827;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 800;
-            font-size: 13px;
-        }
-
-        .user-chip-text {
-            text-align: left;
-        }
-
-        .user-chip-text strong {
-            display: block;
-            font-size: 13px;
-        }
-
-        .user-chip-text span {
-            display: block;
-            font-size: 11px;
-            color: var(--text-muted);
-        }
-
-        .user-menu {
-            position: absolute;
-            top: 56px;
-            right: 0;
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            padding: 8px;
-            width: 160px;
-            display: none;
-            z-index: 5;
-            box-shadow: 0 12px 28px rgba(0,0,0,0.10);
-        }
-
-        .user-menu.open {
-            display: block;
-        }
-
-        .user-menu button {
-            width: 100%;
-            text-align: left;
-            background: none;
             border: none;
-            color: #b91c1c;
+            border-radius: 9px;
+            padding: 13px 22px;
             font-family: inherit;
-            font-size: 13px;
-            font-weight: 600;
-            padding: 8px 10px;
-            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 700;
             cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            white-space: nowrap;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease, color 0.2s ease;
         }
 
-        .user-menu button:hover {
-            background: rgba(248,113,113,0.1);
+        .hero-cta:hover {
+            background: #d97706;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 24px rgba(245,158,11,0.35);
         }
 
-        /* CARDS */
+        /* CONTAINER */
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px 60px;
+        }
+
+        /* STATS */
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px;
+            margin-bottom: 45px;
+        }
+
+        .stat-card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 14px;
+            padding: 22px;
+        }
+
+        .stat-card .value {
+            font-size: 26px;
+            font-weight: 800;
+        }
+
+        .stat-card .label {
+            font-size: 13px;
+            color: #6b7280;
+            margin-top: 4px;
+        }
+
+        /* SECTION */
+
+        .section-header {
+            margin-bottom: 20px;
+        }
+
+        .section-header .label {
+            color: #d97706;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            margin-bottom: 6px;
+        }
+
+        .section-header h2 {
+            font-size: 24px;
+        }
+
+        /* FEATURE CARDS */
 
         .cards-grid {
             display: grid;
@@ -316,106 +232,122 @@
         }
 
         .feature-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 16px;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-top: 3px solid transparent;
+            border-radius: 14px;
             padding: 26px;
             display: flex;
             flex-direction: column;
+            text-decoration: none;
+            color: inherit;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, border-top-color 0.2s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 14px 30px rgba(0,0,0,0.08);
+            border-top-color: #f59e0b;
         }
 
         .feature-icon {
-            width: 54px;
-            height: 54px;
-            border-radius: 14px;
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 24px;
-            margin-bottom: 18px;
+            font-size: 22px;
+            margin-bottom: 16px;
         }
 
         .feature-card h3 {
-            font-size: 17px;
+            font-size: 16px;
             margin-bottom: 8px;
         }
 
         .feature-card p {
-            color: var(--text-muted);
+            color: #6b7280;
             font-size: 13px;
             line-height: 1.5;
             flex: 1;
-            margin-bottom: 20px;
+            margin-bottom: 18px;
         }
 
-        .feature-arrow {
-            width: 38px;
-            height: 38px;
-            border-radius: 50%;
-            background: var(--amber);
-            color: #111827;
-            border: none;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 16px;
-            text-decoration: none;
-            font-weight: 800;
+        .feature-link {
+            font-size: 13px;
+            font-weight: 700;
+            color: #d97706;
         }
 
-        .feature-arrow:hover {
-            background: var(--amber-dark);
-            color: white;
+        .feature-card:hover .feature-link {
+            color: #b45309;
         }
 
-        @media (max-width: 1000px) {
+        @media (max-width: 900px) {
+
+            .stats {
+                grid-template-columns: 1fr 1fr;
+            }
+
             .cards-grid {
-                grid-template-columns: repeat(2, 1fr);
+                grid-template-columns: 1fr 1fr;
             }
         }
 
-        @media (max-width: 780px) {
-            body {
-                flex-direction: column;
-            }
+        @media (max-width: 640px) {
 
-            .sidebar {
-                width: 100%;
-                min-height: auto;
-                position: static;
-                flex-direction: row;
-                align-items: center;
+            .navbar {
+                height: auto;
                 flex-wrap: wrap;
                 gap: 10px;
+                padding: 14px 5%;
             }
 
-            .brand {
-                margin-bottom: 0;
+            .logo strong {
+                font-size: 15px;
             }
 
-            .nav-list {
+            .user-name {
                 display: none;
             }
 
-            .logout-btn {
-                margin-left: auto;
-                width: auto;
+            .hero {
+                padding: 32px 5%;
             }
 
-            .main {
-                padding: 26px 5%;
-            }
-
-            .topbar h1 {
+            .hero h1 {
                 font-size: 24px;
+            }
+
+            .hero-inner {
+                align-items: flex-start;
+            }
+
+            .hero-cta {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .container {
+                padding: 30px 16px 40px;
+            }
+
+            .stats {
+                grid-template-columns: 1fr 1fr;
+                gap: 12px;
+            }
+
+            .stat-card {
+                padding: 16px;
+            }
+
+            .stat-card .value {
+                font-size: 22px;
             }
 
             .cards-grid {
                 grid-template-columns: 1fr;
-            }
-
-            .user-chip-text {
-                display: none;
             }
         }
     </style>
@@ -423,112 +355,107 @@
 
 <body>
 
-<aside class="sidebar">
+<nav class="navbar">
+    <div class="logo">
+        <div class="logo-box">S</div>
+        <strong>SANKALP</strong>
+        <span class="role-tag">CUSTOMER</span>
+    </div>
 
-    <div class="brand">
-        <div class="brand-icon">S</div>
-        <div class="brand-text">
-            <strong>SANKALP</strong>
-            <span>BUILD SMARTER · LIVE BETTER</span>
+    <div class="nav-right">
+        <span class="user-name" id="userName"></span>
+        <button class="logout-btn" onclick="logout()">Logout</button>
+    </div>
+</nav>
+
+<section class="hero">
+    <div class="hero-inner">
+        <div>
+            <span class="hero-tag">Your Construction Portal</span>
+            <h1 id="welcomeHeading">Welcome back</h1>
+            <p>Everything about your projects, in one place.</p>
+        </div>
+
+        <a class="hero-cta" href="start-project.html">+ Start New Project</a>
+    </div>
+</section>
+
+<div class="container">
+
+    <div class="stats">
+        <div class="stat-card">
+            <div class="value" id="statTotal">0</div>
+            <div class="label">Total Projects</div>
+        </div>
+
+        <div class="stat-card">
+            <div class="value" id="statProgress">0</div>
+            <div class="label">In Progress</div>
+        </div>
+
+        <div class="stat-card">
+            <div class="value" id="statCompleted">0</div>
+            <div class="label">Completed</div>
+        </div>
+
+        <div class="stat-card">
+            <div class="value" id="statBudget">₹0</div>
+            <div class="label">Combined Budget</div>
         </div>
     </div>
 
-    <ul class="nav-list">
-        <li><a href="customer-dashboard.html" class="active"><span class="nav-icon">🏠</span> Dashboard</a></li>
-        <li><a href="coming-soon.html?feature=Calendar"><span class="nav-icon">📅</span> Calendar</a></li>
-        <li><a href="coming-soon.html?feature=Notes"><span class="nav-icon">📝</span> Notes</a></li>
-        <li><a href="coming-soon.html?feature=Messages"><span class="nav-icon">💬</span> Messages</a></li>
-        <li><a href="coming-soon.html?feature=Cart"><span class="nav-icon">🛒</span> Cart</a></li>
-        <li><a href="coming-soon.html?feature=Settings"><span class="nav-icon">⚙️</span> Settings</a></li>
-    </ul>
-
-    <button class="logout-btn" onclick="logout()">
-        <span>↩</span> Log out
-    </button>
-
-</aside>
-
-<main class="main">
-
-    <div class="topbar">
-        <div>
-            <h1>DASHBOARD</h1>
-            <p id="welcomeText">Welcome back! Here's your construction project overview.</p>
-        </div>
-
-        <div class="topbar-actions">
-
-            <div style="position: relative;">
-                <button class="icon-btn" id="notifBtn">
-                    🔔
-                    <span class="notif-dot"></span>
-                </button>
-                <div class="dropdown-panel" id="notifPanel">No new notifications yet.</div>
-            </div>
-
-            <div style="position: relative;">
-                <div class="user-chip" id="userChip">
-                    <div class="avatar" id="userAvatar">U</div>
-                    <div class="user-chip-text">
-                        <strong id="userName">-</strong>
-                        <span>Customer</span>
-                    </div>
-                </div>
-                <div class="user-menu" id="userMenu">
-                    <button onclick="logout()">Log out</button>
-                </div>
-            </div>
-
-        </div>
+    <div class="section-header">
+        <div class="label">Explore</div>
+        <h2>What do you want to do?</h2>
     </div>
 
     <div class="cards-grid">
 
-        <div class="feature-card">
+        <a class="feature-card" href="coming-soon.html?feature=List%20of%20Contractors">
             <div class="feature-icon" style="background: rgba(245,158,11,0.12); color: #d97706;">👷</div>
             <h3>List of Contractors</h3>
             <p>Find and manage trusted construction professionals.</p>
-            <a class="feature-arrow" href="coming-soon.html?feature=List%20of%20Contractors">→</a>
-        </div>
+            <span class="feature-link">Open →</span>
+        </a>
 
-        <div class="feature-card">
+        <a class="feature-card" href="coming-soon.html?feature=Task%20Tracker">
             <div class="feature-icon" style="background: rgba(59,130,246,0.12); color: #1e40af;">📋</div>
             <h3>Task Tracker</h3>
             <p>View and manage your construction tasks and activities.</p>
-            <a class="feature-arrow" href="coming-soon.html?feature=Task%20Tracker">→</a>
-        </div>
+            <span class="feature-link">Open →</span>
+        </a>
 
-        <div class="feature-card">
+        <a class="feature-card" href="coming-soon.html?feature=Material%20Details">
             <div class="feature-icon" style="background: rgba(217,119,6,0.12); color: #92400e;">🧱</div>
             <h3>Material Details</h3>
             <p>Browse materials, manage orders and deliveries.</p>
-            <a class="feature-arrow" href="coming-soon.html?feature=Material%20Details">→</a>
-        </div>
+            <span class="feature-link">Open →</span>
+        </a>
 
-        <div class="feature-card">
+        <a class="feature-card" href="coming-soon.html?feature=Material%20Cost%20Comparison">
             <div class="feature-icon" style="background: rgba(16,185,129,0.12); color: #065f46;">🧮</div>
             <h3>Material Cost Comparison</h3>
             <p>Compare material prices and choose cost-effective options.</p>
-            <a class="feature-arrow" href="coming-soon.html?feature=Material%20Cost%20Comparison">→</a>
-        </div>
+            <span class="feature-link">Open →</span>
+        </a>
 
-        <div class="feature-card">
+        <a class="feature-card" href="progress-updates.html">
             <div class="feature-icon" style="background: rgba(139,92,246,0.12); color: #6d28d9;">📈</div>
             <h3>Progress Updates</h3>
             <p>Track your project progress and receive updates.</p>
-            <a class="feature-arrow" href="progress-updates.html">→</a>
-        </div>
+            <span class="feature-link">Open →</span>
+        </a>
 
-        <div class="feature-card">
+        <a class="feature-card" href="budget-expenses.html">
             <div class="feature-icon" style="background: rgba(239,68,68,0.12); color: #b91c1c;">🧾</div>
             <h3>Budget & Expenses</h3>
             <p>Calculate budget, track expenses and manage project costs.</p>
-            <a class="feature-arrow" href="budget-expenses.html">→</a>
-        </div>
+            <span class="feature-link">Open →</span>
+        </a>
 
     </div>
 
-</main>
+</div>
 
 <script>
 
@@ -551,37 +478,23 @@
         window.location.href = "login_page.html";
     }
 
-    if (user) {
-        document.getElementById("welcomeText").textContent =
-            `Welcome back, ${user.name}! Here's your construction project overview.`;
-        document.getElementById("userName").textContent = user.name;
-        document.getElementById("userAvatar").textContent = user.name.charAt(0).toUpperCase();
+    document.getElementById("userName").textContent = user ? user.name : "";
+    document.getElementById("welcomeHeading").textContent = user ? `Welcome back, ${user.name}` : "Welcome back";
+
+    function loadStats() {
+        const projects = JSON.parse(localStorage.getItem("sankalpProjects") || "[]");
+
+        document.getElementById("statTotal").textContent = projects.length;
+        document.getElementById("statProgress").textContent =
+            projects.filter(p => p.status === "In Progress").length;
+        document.getElementById("statCompleted").textContent =
+            projects.filter(p => p.status === "Completed").length;
+
+        const totalBudget = projects.reduce((sum, p) => sum + (Number(p.budget) || 0), 0);
+        document.getElementById("statBudget").textContent = `₹${totalBudget.toLocaleString("en-IN")}`;
     }
 
-    // Notification dropdown
-    const notifBtn = document.getElementById("notifBtn");
-    const notifPanel = document.getElementById("notifPanel");
-
-    notifBtn.addEventListener("click", (event) => {
-        event.stopPropagation();
-        notifPanel.classList.toggle("open");
-        userMenu.classList.remove("open");
-    });
-
-    // User menu dropdown
-    const userChip = document.getElementById("userChip");
-    const userMenu = document.getElementById("userMenu");
-
-    userChip.addEventListener("click", (event) => {
-        event.stopPropagation();
-        userMenu.classList.toggle("open");
-        notifPanel.classList.remove("open");
-    });
-
-    document.addEventListener("click", () => {
-        notifPanel.classList.remove("open");
-        userMenu.classList.remove("open");
-    });
+    loadStats();
 
 </script>
 
