@@ -1,11 +1,12 @@
 const express = require("express");
 const router = express.Router();
 
-const { signup, login, getAllUsers, getContractors, forgotPassword, resetPassword, updateUserRole } = require("../controllers/authController");
+const { signup, login, getCaptcha, getAllUsers, getContractors, forgotPassword, resetPassword, updateUserRole } = require("../controllers/authController");
 const requireAdmin = require("../middleware/requireAdmin");
 const { requireAuth } = require("../middleware/requireAuth");
 
 router.post("/signup", signup);
+router.get("/captcha", getCaptcha);
 router.post("/login", login);
 router.get("/users", requireAdmin, getAllUsers);
 router.get("/contractors", requireAuth, getContractors);

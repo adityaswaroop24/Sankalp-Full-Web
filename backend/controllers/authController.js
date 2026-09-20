@@ -6,6 +6,7 @@ const User = require("../models/User");
 const DailyReport = require("../models/DailyReport");
 const { sendResetEmail } = require("../utils/mailer");
 const { verifyRecaptcha } = require("../utils/recaptcha");
+const { createCaptcha, verifyCaptcha } = require("../utils/captcha");
 
 const toPublicUser = (user) => ({
     id: user._id.toString(),
@@ -81,12 +82,19 @@ const signup = async (req, res) => {
 
 const login = async (req, res) => {
     try {
-        const { email, password } = req.body;
+        const { email, password, captchaToken, captchaAnswer } = req.body;
 
         if (!email || !password) {
             return res.status(400).json({
                 success: false,
                 message: "Email and password are required."
+            });
+        }
+
+        if (!verifyCaptcha(captchaToken, captchaAnswer)) {
+            return res.status(400).json({
+                success: false,
+                message: "Incorrect CAPTCHA. Please try the new one."
             });
         }
 
@@ -135,6 +143,16 @@ const login = async (req, res) => {
             error: error.message
         });
     }
+};
+
+const getCaptcha = (req, res) => {
+    const { token, svg } = createCaptcha();
+
+    res.json({
+        success: true,
+        captchaToken: token,
+        svg
+    });
 };
 
 const getAllUsers = async (req, res) => {
@@ -326,6 +344,7 @@ const updateUserRole = async (req, res) => {
 module.exports = {
     signup,
     login,
+    getCaptcha,
     getAllUsers,
     getContractors,
     forgotPassword,

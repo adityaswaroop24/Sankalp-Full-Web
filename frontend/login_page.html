@@ -248,6 +248,73 @@
             font-size: 17px;
         }
 
+        /* CAPTCHA */
+
+        .captcha-group {
+            margin-bottom: 22px;
+        }
+
+        .captcha-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: #374151;
+
+            margin-bottom: 8px;
+        }
+
+        .captcha-row {
+            display: flex;
+            gap: 10px;
+            align-items: stretch;
+            margin-bottom: 10px;
+        }
+
+        .captcha-image {
+            flex: 1;
+            min-height: 64px;
+            border: 1px solid #d1d5db;
+            border-radius: 10px;
+            background: #f3f4f6;
+            overflow: hidden;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 12px;
+            color: #9ca3af;
+        }
+
+        .captcha-image svg {
+            width: 200px;
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .captcha-refresh {
+            width: 52px;
+            border: 1px solid #d1d5db;
+            border-radius: 10px;
+            background: white;
+            color: #374151;
+            font-size: 20px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .captcha-refresh:hover {
+            border-color: #3b82f6;
+            color: #2563eb;
+            background: rgba(59,130,246,0.06);
+        }
+
+        .captcha-input {
+            padding: 0 16px;
+            letter-spacing: 2px;
+        }
+
         /* OPTIONS */
 
         .form-options {
@@ -648,6 +715,42 @@
                 </div>
 
 
+                <!-- CAPTCHA -->
+
+                <div class="captcha-group">
+
+                    <label>
+                        Type the characters you see
+                    </label>
+
+                    <div class="captcha-row">
+                        <div class="captcha-image" id="captchaImage">Loading...</div>
+
+                        <button
+                            type="button"
+                            class="captcha-refresh"
+                            onclick="loadCaptcha()"
+                            title="Get a new image"
+                        >
+                            ↻
+                        </button>
+                    </div>
+
+                    <input
+                        type="text"
+                        id="captchaAnswer"
+                        class="form-input captcha-input"
+                        placeholder="Enter the characters above"
+                        autocomplete="off"
+                        autocapitalize="off"
+                        spellcheck="false"
+                        maxlength="8"
+                        required
+                    >
+
+                </div>
+
+
                 <!-- Login -->
 
                 <button
@@ -743,9 +846,44 @@
     }
 
 
-    /* ================= LOGIN ================= */
+    /* ================= CAPTCHA ================= */
 
     const API_BASE = "https://sankalp-full-web.onrender.com/api";
+
+    let captchaToken = "";
+
+    async function loadCaptcha() {
+
+        const box = document.getElementById("captchaImage");
+        const input = document.getElementById("captchaAnswer");
+
+        box.textContent = "Loading...";
+        input.value = "";
+        captchaToken = "";
+
+        try {
+
+            const response = await fetch(`${API_BASE}/auth/captcha`);
+            const data = await response.json();
+
+            if (!response.ok || !data.success) {
+                box.textContent = "Could not load. Tap ↻ to retry.";
+                return;
+            }
+
+            captchaToken = data.captchaToken;
+            box.innerHTML = data.svg;
+
+        } catch (error) {
+            console.error("Captcha load failed:", error);
+            box.textContent = "Could not load. Tap ↻ to retry.";
+        }
+    }
+
+    loadCaptcha();
+
+
+    /* ================= LOGIN ================= */
 
     document
         .getElementById("loginForm")
@@ -760,10 +898,33 @@
                 document.getElementById("password").value.trim();
 
 
+            const captchaAnswer =
+                document.getElementById("captchaAnswer").value.trim();
+
             if (!email || !password) {
 
                 showMessage(
                     "Please enter your email and password.",
+                    "error"
+                );
+
+                return;
+            }
+
+            if (!captchaToken) {
+
+                showMessage(
+                    "CAPTCHA has not loaded yet. Tap the refresh button and try again.",
+                    "error"
+                );
+
+                return;
+            }
+
+            if (!captchaAnswer) {
+
+                showMessage(
+                    "Please type the characters shown in the image.",
                     "error"
                 );
 
@@ -775,7 +936,7 @@
                 const response = await fetch(`${API_BASE}/auth/login`, {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ email, password })
+                    body: JSON.stringify({ email, password, captchaToken, captchaAnswer })
                 });
 
                 const data = await response.json();
@@ -785,6 +946,7 @@
                         data.message || "Login failed.",
                         "error"
                     );
+                    loadCaptcha();
                     return;
                 }
 
