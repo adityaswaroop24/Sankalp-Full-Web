@@ -180,73 +180,6 @@
             font-size: 14px;
         }
 
-        /* ROLE SELECTOR */
-
-        .role-container {
-            position: relative;
-
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 8px;
-
-            padding: 5px;
-            background: #f3f4f6;
-            border-radius: 12px;
-
-            margin-bottom: 28px;
-        }
-
-        .role-indicator {
-            position: absolute;
-            top: 5px;
-            height: calc(100% - 10px);
-
-            background: #ffffff;
-            border-radius: 9px;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
-
-            transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-                        width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .role-btn {
-            position: relative;
-            z-index: 1;
-
-            border: none;
-            background: transparent;
-
-            padding: 12px 5px;
-
-            border-radius: 9px;
-
-            cursor: pointer;
-
-            font-family: inherit;
-            font-size: 12px;
-            font-weight: 600;
-
-            color: #6b7280;
-
-            transition: color 0.25s ease;
-        }
-
-        .role-btn .role-icon {
-            display: block;
-            font-size: 18px;
-            margin-bottom: 5px;
-
-            transition: color 0.25s ease;
-        }
-
-        .role-btn.active {
-            color: #111827;
-        }
-
-        .role-btn.active .role-icon {
-            color: #3b82f6;
-        }
-
         /* FORM */
 
         .form-group {
@@ -539,14 +472,6 @@
 
         @media (max-width: 420px) {
 
-            .role-btn {
-                font-size: 10px;
-            }
-
-            .role-btn .role-icon {
-                font-size: 16px;
-            }
-
             .login-header h2 {
                 font-size: 27px;
             }
@@ -629,44 +554,6 @@
                 <p>
                     Sign in to continue managing your construction projects.
                 </p>
-
-            </div>
-
-
-            <!-- Role Selection -->
-
-            <div class="role-container">
-
-                <div class="role-indicator" id="roleIndicator"></div>
-
-                <button
-                    class="role-btn active"
-                    data-role="Admin"
-                    onclick="selectRole(this)"
-                >
-                    <span class="role-icon">⚙</span>
-                    Admin
-                </button>
-
-
-                <button
-                    class="role-btn"
-                    data-role="Customer"
-                    onclick="selectRole(this)"
-                >
-                    <span class="role-icon">⌂</span>
-                    Customer
-                </button>
-
-
-                <button
-                    class="role-btn"
-                    data-role="Professional"
-                    onclick="selectRole(this)"
-                >
-                    <span class="role-icon">🏗</span>
-                    Professional
-                </button>
 
             </div>
 
@@ -832,43 +719,6 @@
 
 <script>
 
-    let selectedRole = "Admin";
-
-
-    /* ================= ROLE SELECTION ================= */
-
-    function selectRole(button) {
-
-        document.querySelectorAll(".role-btn").forEach(btn => {
-            btn.classList.remove("active");
-        });
-
-        button.classList.add("active");
-
-        selectedRole = button.dataset.role;
-
-        moveRoleIndicator(button);
-
-        console.log("Selected Role:", selectedRole);
-    }
-
-    function moveRoleIndicator(button) {
-
-        const indicator = document.getElementById("roleIndicator");
-
-        indicator.style.left = button.offsetLeft + "px";
-        indicator.style.width = button.offsetWidth + "px";
-    }
-
-    window.addEventListener("load", () => {
-        moveRoleIndicator(document.querySelector(".role-btn.active"));
-    });
-
-    window.addEventListener("resize", () => {
-        moveRoleIndicator(document.querySelector(".role-btn.active"));
-    });
-
-
     /* ================= PASSWORD ================= */
 
     function togglePassword() {
@@ -925,7 +775,7 @@
                 const response = await fetch(`${API_BASE}/auth/login`, {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ email, password, role: selectedRole })
+                    body: JSON.stringify({ email, password })
                 });
 
                 const data = await response.json();
