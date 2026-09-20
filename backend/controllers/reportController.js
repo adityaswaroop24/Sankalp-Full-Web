@@ -116,9 +116,82 @@ const getAllReports = async (req, res) => {
     }
 };
 
+const updateReport = async (req, res) => {
+    try {
+        const report = await DailyReport.findOne({ _id: req.params.id, professionalId: req.user.id });
+
+        if (!report) {
+            return res.status(404).json({
+                success: false,
+                message: "Report not found."
+            });
+        }
+
+        const { customerEmail, projectName, reportDate, workSummary, amountSpent, daysElapsed } = req.body;
+
+        if (!customerEmail || !projectName || !reportDate || !workSummary) {
+            return res.status(400).json({
+                success: false,
+                message: "Customer email, project name, date and work summary are required."
+            });
+        }
+
+        report.customerEmail = customerEmail;
+        report.projectName = projectName;
+        report.reportDate = new Date(reportDate);
+        report.workSummary = workSummary;
+        report.amountSpent = Number(amountSpent) || 0;
+        report.daysElapsed = daysElapsed ? Number(daysElapsed) : null;
+
+        await report.save();
+
+        res.json({
+            success: true,
+            message: "Report updated successfully!",
+            report: toPublicReport(report)
+        });
+
+    } catch (error) {
+        console.error("Update report error:", error);
+
+        res.status(500).json({
+            success: false,
+            message: "Failed to update report."
+        });
+    }
+};
+
+const deleteReport = async (req, res) => {
+    try {
+        const report = await DailyReport.findOneAndDelete({ _id: req.params.id, professionalId: req.user.id });
+
+        if (!report) {
+            return res.status(404).json({
+                success: false,
+                message: "Report not found."
+            });
+        }
+
+        res.json({
+            success: true,
+            message: "Report deleted successfully."
+        });
+
+    } catch (error) {
+        console.error("Delete report error:", error);
+
+        res.status(500).json({
+            success: false,
+            message: "Failed to delete report."
+        });
+    }
+};
+
 module.exports = {
     createReport,
     getMyReports,
     getReportsForCustomer,
-    getAllReports
+    getAllReports,
+    updateReport,
+    deleteReport
 };

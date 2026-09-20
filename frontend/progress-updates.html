@@ -213,6 +213,143 @@
             border-radius: 20px;
         }
 
+        .card-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 16px;
+        }
+
+        .action-btn {
+            flex: 1;
+            border: 1px solid #d1d5db;
+            background: white;
+            border-radius: 8px;
+            padding: 8px 0;
+            font-family: inherit;
+            font-size: 12px;
+            font-weight: 700;
+            color: #374151;
+            cursor: pointer;
+        }
+
+        .action-btn.edit:hover {
+            border-color: #f59e0b;
+            color: #d97706;
+        }
+
+        .action-btn.delete:hover {
+            border-color: #b91c1c;
+            color: #b91c1c;
+        }
+
+        .status-msg {
+            font-size: 13px;
+            color: #b91c1c;
+        }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(17,24,39,0.5);
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            z-index: 100;
+        }
+
+        .modal-overlay.visible {
+            display: flex;
+        }
+
+        .modal-card {
+            background: white;
+            border-radius: 16px;
+            padding: 28px;
+            max-width: 480px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-card h2 {
+            font-size: 18px;
+            margin-bottom: 18px;
+        }
+
+        .field {
+            margin-bottom: 16px;
+        }
+
+        .field label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: #374151;
+        }
+
+        .field input, .field select, .field textarea {
+            width: 100%;
+            border: 1px solid #d1d5db;
+            border-radius: 9px;
+            padding: 11px 12px;
+            font-family: inherit;
+            font-size: 14px;
+            outline: none;
+        }
+
+        .field textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+
+        .field input:focus, .field select:focus, .field textarea:focus {
+            border-color: #f59e0b;
+            box-shadow: 0 0 0 3px rgba(245,158,11,0.1);
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 8px;
+        }
+
+        .modal-cancel {
+            flex: 1;
+            border: 1px solid #d1d5db;
+            background: white;
+            border-radius: 9px;
+            padding: 12px 0;
+            font-family: inherit;
+            font-size: 13px;
+            font-weight: 700;
+            color: #374151;
+            cursor: pointer;
+        }
+
+        .modal-cancel:hover {
+            background: #f9fafb;
+        }
+
+        .modal-save {
+            flex: 1;
+            border: none;
+            border-radius: 9px;
+            background: #f59e0b;
+            color: #111827;
+            padding: 12px 0;
+            font-family: inherit;
+            font-size: 13px;
+            font-weight: 800;
+            cursor: pointer;
+        }
+
+        .modal-save:hover {
+            background: #d97706;
+            color: white;
+        }
+
         @media (max-width: 640px) {
 
             .navbar {
@@ -312,6 +449,57 @@
 
 </div>
 
+<div class="modal-overlay" id="editModalOverlay">
+    <div class="modal-card">
+        <h2>Edit Project</h2>
+
+        <div id="editStatus" class="status-msg" style="margin-bottom: 12px;"></div>
+
+        <form id="editForm">
+            <div class="field">
+                <label>Project Name *</label>
+                <input type="text" id="editProjectName" required>
+            </div>
+
+            <div class="field">
+                <label>Project Type *</label>
+                <select id="editProjectType" required>
+                    <option value="Residential House">Residential House</option>
+                    <option value="Apartment">Apartment</option>
+                    <option value="Villa">Villa</option>
+                    <option value="Renovation">Renovation</option>
+                    <option value="Commercial">Commercial Building</option>
+                </select>
+            </div>
+
+            <div class="field">
+                <label>Estimated Budget</label>
+                <input type="number" id="editBudget">
+            </div>
+
+            <div class="field">
+                <label>Expected Completion</label>
+                <input type="date" id="editCompletion">
+            </div>
+
+            <div class="field">
+                <label>Project Location *</label>
+                <input type="text" id="editLocation" required>
+            </div>
+
+            <div class="field">
+                <label>Project Description</label>
+                <textarea id="editDescription"></textarea>
+            </div>
+
+            <div class="modal-actions">
+                <button type="button" class="modal-cancel" id="editCancelBtn">Cancel</button>
+                <button type="submit" class="modal-save">Save Changes</button>
+            </div>
+        </form>
+    </div>
+</div>
+
 <script>
 
     const API_BASE = "https://sankalp-full-web.onrender.com/api";
@@ -409,11 +597,113 @@
             track.appendChild(fill);
             card.appendChild(track);
 
+            const actions = document.createElement("div");
+            actions.className = "card-actions";
+
+            const editBtn = document.createElement("button");
+            editBtn.className = "action-btn edit";
+            editBtn.textContent = "Edit";
+            editBtn.addEventListener("click", () => openEditModal(project));
+            actions.appendChild(editBtn);
+
+            const deleteBtn = document.createElement("button");
+            deleteBtn.className = "action-btn delete";
+            deleteBtn.textContent = "Delete";
+            deleteBtn.addEventListener("click", () => deleteProject(project.id));
+            actions.appendChild(deleteBtn);
+
+            card.appendChild(actions);
+
             grid.appendChild(card);
         });
 
         area.innerHTML = "";
         area.appendChild(grid);
+    }
+
+    let editingProjectId = null;
+
+    function openEditModal(project) {
+        editingProjectId = project.id;
+
+        document.getElementById("editProjectName").value = project.project_name || "";
+        document.getElementById("editProjectType").value = project.project_type || "Residential House";
+        document.getElementById("editBudget").value = project.budget || "";
+        document.getElementById("editCompletion").value = project.completion_date || "";
+        document.getElementById("editLocation").value = project.location || "";
+        document.getElementById("editDescription").value = project.description || "";
+
+        document.getElementById("editStatus").textContent = "";
+        document.getElementById("editModalOverlay").classList.add("visible");
+    }
+
+    function closeEditModal() {
+        editingProjectId = null;
+        document.getElementById("editModalOverlay").classList.remove("visible");
+    }
+
+    document.getElementById("editCancelBtn").addEventListener("click", closeEditModal);
+
+    document.getElementById("editModalOverlay").addEventListener("click", (event) => {
+        if (event.target.id === "editModalOverlay") {
+            closeEditModal();
+        }
+    });
+
+    document.getElementById("editForm").addEventListener("submit", async function(event) {
+        event.preventDefault();
+
+        const editStatus = document.getElementById("editStatus");
+
+        const payload = {
+            projectName: document.getElementById("editProjectName").value.trim(),
+            projectType: document.getElementById("editProjectType").value,
+            budget: document.getElementById("editBudget").value,
+            completion: document.getElementById("editCompletion").value,
+            location: document.getElementById("editLocation").value.trim(),
+            description: document.getElementById("editDescription").value.trim()
+        };
+
+        try {
+            const response = await fetch(`${API_BASE}/projects/${editingProjectId}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
+                },
+                body: JSON.stringify(payload)
+            });
+
+            const data = await response.json();
+
+            if (!response.ok || !data.success) {
+                editStatus.textContent = data.message || "Failed to update project.";
+                return;
+            }
+
+            closeEditModal();
+            loadProjects();
+
+        } catch (error) {
+            console.error("Update project failed:", error);
+            editStatus.textContent = "Could not reach the server.";
+        }
+    });
+
+    async function deleteProject(id) {
+        if (!confirm("Delete this project? This cannot be undone.")) {
+            return;
+        }
+
+        try {
+            await fetch(`${API_BASE}/projects/${id}`, {
+                method: "DELETE",
+                headers: { "Authorization": `Bearer ${token}` }
+            });
+            loadProjects();
+        } catch (error) {
+            console.error("Delete project failed:", error);
+        }
     }
 
     loadProjects();

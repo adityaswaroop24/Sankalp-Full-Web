@@ -5,7 +5,9 @@ const {
     createReport,
     getMyReports,
     getReportsForCustomer,
-    getAllReports
+    getAllReports,
+    updateReport,
+    deleteReport
 } = require("../controllers/reportController");
 
 const { requireAuth, requireRole } = require("../middleware/requireAuth");
@@ -15,5 +17,7 @@ router.post("/", requireAuth, requireRole("Professional"), createReport);
 router.get("/mine", requireAuth, requireRole("Professional"), getMyReports);
 router.get("/customer", requireAuth, requireRole("Customer"), getReportsForCustomer);
 router.get("/all", requireAdmin, getAllReports);
+router.put("/:id", requireAuth, requireRole("Professional"), updateReport);
+router.delete("/:id", requireAuth, requireRole("Professional"), deleteReport);
 
 module.exports = router;

@@ -111,8 +111,81 @@ const getAllProjects = async (req, res) => {
     }
 };
 
+const updateProject = async (req, res) => {
+    try {
+        const project = await Project.findOne({ _id: req.params.id, customerId: req.user.id });
+
+        if (!project) {
+            return res.status(404).json({
+                success: false,
+                message: "Project not found."
+            });
+        }
+
+        const { projectName, projectType, budget, completion, location, description } = req.body;
+
+        if (!projectName || !projectType || !location) {
+            return res.status(400).json({
+                success: false,
+                message: "Project name, project type and location are required."
+            });
+        }
+
+        project.project_name = projectName;
+        project.project_type = projectType;
+        project.budget = budget ? Number(budget) : null;
+        project.completion_date = completion || null;
+        project.location = location;
+        project.description = description || null;
+
+        await project.save();
+
+        res.json({
+            success: true,
+            message: "Project updated successfully!",
+            project: toPublicProject(project)
+        });
+
+    } catch (error) {
+        console.error("Update project error:", error);
+
+        res.status(500).json({
+            success: false,
+            message: "Failed to update project."
+        });
+    }
+};
+
+const deleteProject = async (req, res) => {
+    try {
+        const project = await Project.findOneAndDelete({ _id: req.params.id, customerId: req.user.id });
+
+        if (!project) {
+            return res.status(404).json({
+                success: false,
+                message: "Project not found."
+            });
+        }
+
+        res.json({
+            success: true,
+            message: "Project deleted successfully."
+        });
+
+    } catch (error) {
+        console.error("Delete project error:", error);
+
+        res.status(500).json({
+            success: false,
+            message: "Failed to delete project."
+        });
+    }
+};
+
 module.exports = {
     createProject,
     getMyProjects,
-    getAllProjects
+    getAllProjects,
+    updateProject,
+    deleteProject
 };
