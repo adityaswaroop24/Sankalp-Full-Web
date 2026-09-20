@@ -26,9 +26,9 @@ const pruneUsed = () => {
 const createCaptcha = () => {
     const captcha = svgCaptcha.create({
         size: 5,
-        width: 200,
-        height: 64,
-        fontSize: 52,
+        width: 160,
+        height: 50,
+        fontSize: 42,
         noise: 2,
         color: true,
         ignoreChars: "0oO1ilI",
