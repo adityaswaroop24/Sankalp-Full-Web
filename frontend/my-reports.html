@@ -238,7 +238,7 @@
             color: #374151;
         }
 
-        .field input, .field textarea {
+        .field input, .field select, .field textarea {
             width: 100%;
             border: 1px solid #d1d5db;
             border-radius: 9px;
@@ -253,7 +253,7 @@
             resize: vertical;
         }
 
-        .field input:focus, .field textarea:focus {
+        .field input:focus, .field select:focus, .field textarea:focus {
             border-color: #f59e0b;
             box-shadow: 0 0 0 3px rgba(245,158,11,0.1);
         }
@@ -356,13 +356,10 @@
 
         <form id="editForm">
             <div class="field">
-                <label>Customer's Email *</label>
-                <input type="email" id="editCustomerEmail" required>
-            </div>
-
-            <div class="field">
-                <label>Project Name *</label>
-                <input type="text" id="editProjectName" required>
+                <label>Project *</label>
+                <select id="editProjectId" required>
+                    <option value="">Loading projects...</option>
+                </select>
             </div>
 
             <div class="grid-2">
@@ -453,7 +450,7 @@
                 card.appendChild(top);
 
                 [
-                    `Customer: ${report.customerEmail}`,
+                    `Customer: ${report.customerEmail || "-"}`,
                     `Amount spent: ₹${Number(report.amountSpent).toLocaleString("en-IN")}`,
                     report.daysElapsed !== null ? `Days elapsed: ${report.daysElapsed}` : null
                 ].filter(Boolean).forEach(text => {
@@ -495,12 +492,50 @@
     }
 
     let editingReportId = null;
+    let cachedProjects = null;
 
-    function openEditModal(report) {
+    async function loadProjectsForEdit() {
+        if (cachedProjects) {
+            return cachedProjects;
+        }
+
+        try {
+            const response = await fetch(`${API_BASE}/projects/all`, {
+                headers: { "Authorization": `Bearer ${token}` }
+            });
+
+            const data = await response.json();
+
+            cachedProjects = (response.ok && data.success) ? data.projects : [];
+
+        } catch (error) {
+            console.error("Failed to load projects:", error);
+            cachedProjects = [];
+        }
+
+        return cachedProjects;
+    }
+
+    async function openEditModal(report) {
         editingReportId = report.id;
 
-        document.getElementById("editCustomerEmail").value = report.customerEmail || "";
-        document.getElementById("editProjectName").value = report.projectName || "";
+        const select = document.getElementById("editProjectId");
+        const projects = await loadProjectsForEdit();
+
+        if (projects.length === 0) {
+            select.innerHTML = `<option value="">No projects available</option>`;
+        } else {
+            select.innerHTML = "";
+            projects.forEach(project => {
+                const option = document.createElement("option");
+                option.value = project.id;
+                option.textContent = `${project.project_name} — ${project.customer_name || project.email || "Unknown customer"} (${project.location})`;
+                select.appendChild(option);
+            });
+        }
+
+        select.value = report.projectId || "";
+
         document.getElementById("editReportDate").value = new Date(report.reportDate).toISOString().split("T")[0];
         document.getElementById("editDaysElapsed").value = report.daysElapsed !== null ? report.daysElapsed : "";
         document.getElementById("editAmountSpent").value = report.amountSpent || "";
@@ -529,13 +564,17 @@
         const editStatus = document.getElementById("editStatus");
 
         const payload = {
-            customerEmail: document.getElementById("editCustomerEmail").value.trim(),
-            projectName: document.getElementById("editProjectName").value.trim(),
+            projectId: document.getElementById("editProjectId").value,
             reportDate: document.getElementById("editReportDate").value,
             daysElapsed: document.getElementById("editDaysElapsed").value || null,
             amountSpent: document.getElementById("editAmountSpent").value,
             workSummary: document.getElementById("editWorkSummary").value.trim()
         };
+
+        if (!payload.projectId) {
+            editStatus.textContent = "Please select a project.";
+            return;
+        }
 
         try {
             const response = await fetch(`${API_BASE}/reports/${editingReportId}`, {

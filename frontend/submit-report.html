@@ -110,7 +110,7 @@
             color: #374151;
         }
 
-        input, textarea {
+        input, select, textarea {
             width: 100%;
             border: 1px solid #d1d5db;
             border-radius: 9px;
@@ -125,7 +125,7 @@
             resize: vertical;
         }
 
-        input:focus, textarea:focus {
+        input:focus, select:focus, textarea:focus {
             border-color: #f59e0b;
             box-shadow: 0 0 0 3px rgba(245,158,11,0.1);
         }
@@ -208,13 +208,10 @@
         <form id="reportForm">
 
             <div class="field">
-                <label>Customer's Email *</label>
-                <input type="email" id="customerEmail" placeholder="homeowner@email.com" required>
-            </div>
-
-            <div class="field">
-                <label>Project Name *</label>
-                <input type="text" id="projectName" placeholder="e.g. Reddy Villa, Kondapur" required>
+                <label>Project *</label>
+                <select id="projectId" required>
+                    <option value="">Loading projects...</option>
+                </select>
             </div>
 
             <div class="grid-2">
@@ -267,19 +264,55 @@
         message.className = "message " + type;
     }
 
+    async function loadProjects() {
+        const select = document.getElementById("projectId");
+
+        try {
+            const response = await fetch(`${API_BASE}/projects/all`, {
+                headers: { "Authorization": `Bearer ${token}` }
+            });
+
+            const data = await response.json();
+
+            if (!response.ok || !data.success || data.projects.length === 0) {
+                select.innerHTML = `<option value="">No projects available yet</option>`;
+                return;
+            }
+
+            select.innerHTML = `<option value="">Select a project</option>`;
+
+            data.projects.forEach(project => {
+                const option = document.createElement("option");
+                option.value = project.id;
+                option.textContent = `${project.project_name} — ${project.customer_name || project.email || "Unknown customer"} (${project.location})`;
+                select.appendChild(option);
+            });
+
+        } catch (error) {
+            console.error("Failed to load projects:", error);
+            select.innerHTML = `<option value="">Could not load projects</option>`;
+        }
+    }
+
+    loadProjects();
+
     document.getElementById("reportForm").addEventListener("submit", async function(event) {
         event.preventDefault();
 
         const submitBtn = document.getElementById("submitBtn");
 
         const payload = {
-            customerEmail: document.getElementById("customerEmail").value.trim(),
-            projectName: document.getElementById("projectName").value.trim(),
+            projectId: document.getElementById("projectId").value,
             reportDate: document.getElementById("reportDate").value,
             daysElapsed: document.getElementById("daysElapsed").value || null,
             amountSpent: document.getElementById("amountSpent").value,
             workSummary: document.getElementById("workSummary").value.trim()
         };
+
+        if (!payload.projectId) {
+            showMessage("Please select a project.", "error");
+            return;
+        }
 
         submitBtn.disabled = true;
         submitBtn.textContent = "Submitting...";
