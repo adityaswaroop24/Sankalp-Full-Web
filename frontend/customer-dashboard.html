@@ -18,23 +18,14 @@
         }
 
         :root {
-            --bg-main: #0b1220;
-            --bg-sidebar: #0d1526;
-            --bg-card: #121b30;
-            --border: #1f2b45;
-            --text-main: #f1f5f9;
-            --text-muted: #94a3b8;
-            --amber: #f59e0b;
-            --amber-dark: #d97706;
-        }
-
-        body.light-theme {
             --bg-main: #f5f6f8;
             --bg-sidebar: #ffffff;
             --bg-card: #ffffff;
             --border: #e5e7eb;
             --text-main: #111827;
             --text-muted: #6b7280;
+            --amber: #f59e0b;
+            --amber-dark: #d97706;
         }
 
         body {
@@ -43,7 +34,6 @@
             color: var(--text-main);
             min-height: 100vh;
             display: flex;
-            transition: background 0.2s ease, color 0.2s ease;
         }
 
         /* SIDEBAR */
@@ -141,9 +131,9 @@
             align-items: center;
             gap: 10px;
             justify-content: center;
-            border: 1px solid #7f1d1d;
-            background: transparent;
-            color: #f87171;
+            border: 1px solid #d1d5db;
+            background: white;
+            color: #374151;
             border-radius: 10px;
             padding: 11px 14px;
             font-family: inherit;
@@ -153,7 +143,9 @@
         }
 
         .logout-btn:hover {
-            background: rgba(248,113,113,0.1);
+            background: #f9fafb;
+            border-color: #b91c1c;
+            color: #b91c1c;
         }
 
         /* MAIN */
@@ -233,7 +225,7 @@
             width: 210px;
             display: none;
             z-index: 5;
-            box-shadow: 0 12px 28px rgba(0,0,0,0.25);
+            box-shadow: 0 12px 28px rgba(0,0,0,0.10);
         }
 
         .dropdown-panel.open {
@@ -290,7 +282,7 @@
             width: 160px;
             display: none;
             z-index: 5;
-            box-shadow: 0 12px 28px rgba(0,0,0,0.25);
+            box-shadow: 0 12px 28px rgba(0,0,0,0.10);
         }
 
         .user-menu.open {
@@ -302,7 +294,7 @@
             text-align: left;
             background: none;
             border: none;
-            color: #f87171;
+            color: #b91c1c;
             font-family: inherit;
             font-size: 13px;
             font-weight: 600;
@@ -466,8 +458,6 @@
 
         <div class="topbar-actions">
 
-            <button class="icon-btn" id="themeToggle" title="Toggle theme">🌙</button>
-
             <div style="position: relative;">
                 <button class="icon-btn" id="notifBtn">
                     🔔
@@ -495,42 +485,42 @@
     <div class="cards-grid">
 
         <div class="feature-card">
-            <div class="feature-icon" style="background: rgba(249,115,22,0.15); color: #fb923c;">👷</div>
+            <div class="feature-icon" style="background: rgba(245,158,11,0.12); color: #d97706;">👷</div>
             <h3>List of Contractors</h3>
             <p>Find and manage trusted construction professionals.</p>
             <a class="feature-arrow" href="coming-soon.html?feature=List%20of%20Contractors">→</a>
         </div>
 
         <div class="feature-card">
-            <div class="feature-icon" style="background: rgba(59,130,246,0.15); color: #60a5fa;">📋</div>
+            <div class="feature-icon" style="background: rgba(59,130,246,0.12); color: #1e40af;">📋</div>
             <h3>Task Tracker</h3>
             <p>View and manage your construction tasks and activities.</p>
             <a class="feature-arrow" href="coming-soon.html?feature=Task%20Tracker">→</a>
         </div>
 
         <div class="feature-card">
-            <div class="feature-icon" style="background: rgba(217,119,6,0.15); color: #f59e0b;">🧱</div>
+            <div class="feature-icon" style="background: rgba(217,119,6,0.12); color: #92400e;">🧱</div>
             <h3>Material Details</h3>
             <p>Browse materials, manage orders and deliveries.</p>
             <a class="feature-arrow" href="coming-soon.html?feature=Material%20Details">→</a>
         </div>
 
         <div class="feature-card">
-            <div class="feature-icon" style="background: rgba(16,185,129,0.15); color: #34d399;">🧮</div>
+            <div class="feature-icon" style="background: rgba(16,185,129,0.12); color: #065f46;">🧮</div>
             <h3>Material Cost Comparison</h3>
             <p>Compare material prices and choose cost-effective options.</p>
             <a class="feature-arrow" href="coming-soon.html?feature=Material%20Cost%20Comparison">→</a>
         </div>
 
         <div class="feature-card">
-            <div class="feature-icon" style="background: rgba(139,92,246,0.15); color: #a78bfa;">📈</div>
+            <div class="feature-icon" style="background: rgba(139,92,246,0.12); color: #6d28d9;">📈</div>
             <h3>Progress Updates</h3>
             <p>Track your project progress and receive updates.</p>
             <a class="feature-arrow" href="progress-updates.html">→</a>
         </div>
 
         <div class="feature-card">
-            <div class="feature-icon" style="background: rgba(239,68,68,0.15); color: #f87171;">🧾</div>
+            <div class="feature-icon" style="background: rgba(239,68,68,0.12); color: #b91c1c;">🧾</div>
             <h3>Budget & Expenses</h3>
             <p>Calculate budget, track expenses and manage project costs.</p>
             <a class="feature-arrow" href="budget-expenses.html">→</a>
@@ -567,22 +557,6 @@
         document.getElementById("userName").textContent = user.name;
         document.getElementById("userAvatar").textContent = user.name.charAt(0).toUpperCase();
     }
-
-    // Theme toggle (persisted per browser)
-    const themeToggle = document.getElementById("themeToggle");
-    const savedTheme = localStorage.getItem("sankalpTheme");
-
-    if (savedTheme === "light") {
-        document.body.classList.add("light-theme");
-        themeToggle.textContent = "☀️";
-    }
-
-    themeToggle.addEventListener("click", () => {
-        document.body.classList.toggle("light-theme");
-        const isLight = document.body.classList.contains("light-theme");
-        themeToggle.textContent = isLight ? "☀️" : "🌙";
-        localStorage.setItem("sankalpTheme", isLight ? "light" : "dark");
-    });
 
     // Notification dropdown
     const notifBtn = document.getElementById("notifBtn");
