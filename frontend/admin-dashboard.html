@@ -234,6 +234,23 @@
             color: #1e40af;
         }
 
+        .role-select {
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            padding: 5px 8px;
+            font-family: inherit;
+            font-size: 12px;
+            font-weight: 600;
+            color: #374151;
+            background: white;
+            cursor: pointer;
+        }
+
+        .role-select:focus {
+            outline: none;
+            border-color: #f59e0b;
+        }
+
         .empty-row {
             text-align: center;
             color: #6b7280;
@@ -549,10 +566,30 @@
                 row.appendChild(emailCell);
 
                 const roleCell = document.createElement("td");
-                const pill = document.createElement("span");
-                pill.className = `role-pill ${u.role}`;
-                pill.textContent = u.role;
-                roleCell.appendChild(pill);
+
+                if (u.id === user.id) {
+                    const pill = document.createElement("span");
+                    pill.className = `role-pill ${u.role}`;
+                    pill.textContent = u.role;
+                    roleCell.appendChild(pill);
+                } else {
+                    const select = document.createElement("select");
+                    select.className = "role-select";
+
+                    ["Customer", "Professional", "Admin"].forEach(roleOption => {
+                        const option = document.createElement("option");
+                        option.value = roleOption;
+                        option.textContent = roleOption;
+                        if (roleOption === u.role) {
+                            option.selected = true;
+                        }
+                        select.appendChild(option);
+                    });
+
+                    select.addEventListener("change", () => updateUserRole(u.id, select.value, u.name));
+                    roleCell.appendChild(select);
+                }
+
                 row.appendChild(roleCell);
 
                 const joinedCell = document.createElement("td");
@@ -574,6 +611,37 @@
         } catch (error) {
             console.error("Failed to load users:", error);
             area.innerHTML = `<p class="status-msg">Could not reach the server.</p>`;
+        }
+    }
+
+    async function updateUserRole(userId, newRole, userName) {
+        if (!confirm(`Change ${userName}'s role to ${newRole}?`)) {
+            loadUsers();
+            return;
+        }
+
+        try {
+            const response = await fetch(`${API_BASE}/auth/users/${userId}/role`, {
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
+                },
+                body: JSON.stringify({ role: newRole })
+            });
+
+            const data = await response.json();
+
+            if (!response.ok || !data.success) {
+                alert(data.message || "Failed to update role.");
+            }
+
+            loadUsers();
+
+        } catch (error) {
+            console.error("Failed to update role:", error);
+            alert("Could not reach the server.");
+            loadUsers();
         }
     }
 
