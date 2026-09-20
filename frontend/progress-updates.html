@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Progress Updates | Sankalp</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Inter", sans-serif;
+            background: #f5f6f8;
+            color: #111827;
+            min-height: 100vh;
+        }
+
+        .navbar {
+            height: 72px;
+            background: white;
+            border-bottom: 1px solid #e5e7eb;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 7%;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-box {
+            width: 38px;
+            height: 38px;
+            background: #f59e0b;
+            border-radius: 9px;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            font-weight: 800;
+            color: #111827;
+        }
+
+        .logo strong {
+            font-size: 18px;
+            letter-spacing: 0.5px;
+        }
+
+        .back-link {
+            font-size: 13px;
+            font-weight: 600;
+            color: #6b7280;
+            text-decoration: none;
+        }
+
+        .back-link:hover {
+            color: #d97706;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 45px 20px;
+        }
+
+        .welcome h1 {
+            font-size: 28px;
+            margin-bottom: 6px;
+        }
+
+        .welcome p {
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+            margin: 30px 0;
+        }
+
+        .stat-card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 14px;
+            padding: 22px;
+        }
+
+        .stat-card .value {
+            font-size: 30px;
+            font-weight: 800;
+        }
+
+        .stat-card .label {
+            font-size: 13px;
+            color: #6b7280;
+            margin-top: 4px;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 18px;
+        }
+
+        .section-header h2 {
+            font-size: 20px;
+        }
+
+        .cta-btn {
+            background: #f59e0b;
+            color: #111827;
+            border: none;
+            border-radius: 9px;
+            padding: 12px 20px;
+            font-family: inherit;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .cta-btn:hover {
+            background: #d97706;
+            color: white;
+        }
+
+        .empty {
+            background: white;
+            border: 1px dashed #d1d5db;
+            border-radius: 14px;
+            padding: 50px 20px;
+            text-align: center;
+            color: #6b7280;
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 18px;
+        }
+
+        .project-card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 14px;
+            padding: 22px;
+        }
+
+        .project-card h3 {
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+
+        .badge {
+            display: inline-block;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 20px;
+            margin-bottom: 12px;
+        }
+
+        .badge.planning {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .badge.progress {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        .badge.completed {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .project-detail {
+            font-size: 13px;
+            color: #4b5563;
+            margin-bottom: 6px;
+        }
+
+        .progress-bar-track {
+            height: 8px;
+            background: #f3f4f6;
+            border-radius: 20px;
+            margin-top: 12px;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background: #f59e0b;
+            border-radius: 20px;
+        }
+
+        @media (max-width: 640px) {
+
+            .navbar {
+                height: auto;
+                flex-wrap: wrap;
+                gap: 10px;
+                padding: 14px 5%;
+            }
+
+            .logo strong {
+                font-size: 15px;
+            }
+
+            .container {
+                padding: 30px 16px;
+            }
+
+            .welcome h1 {
+                font-size: 22px;
+            }
+
+            .stats {
+                grid-template-columns: 1fr 1fr;
+                gap: 12px;
+            }
+
+            .stat-card {
+                padding: 16px;
+            }
+
+            .stat-card .value {
+                font-size: 24px;
+            }
+
+            .section-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 12px;
+            }
+
+            .cta-btn {
+                width: 100%;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 400px) {
+
+            .stats {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<nav class="navbar">
+    <div class="logo">
+        <div class="logo-box">S</div>
+        <strong>SANKALP</strong>
+    </div>
+
+    <a class="back-link" href="customer-dashboard.html">← Back to Dashboard</a>
+</nav>
+
+<div class="container">
+
+    <div class="welcome">
+        <h1>Progress Updates</h1>
+        <p>Track the status of every project you've started.</p>
+    </div>
+
+    <div class="stats">
+        <div class="stat-card">
+            <div class="value" id="statTotal">0</div>
+            <div class="label">Total Projects</div>
+        </div>
+
+        <div class="stat-card">
+            <div class="value" id="statProgress">0</div>
+            <div class="label">In Progress</div>
+        </div>
+
+        <div class="stat-card">
+            <div class="value" id="statCompleted">0</div>
+            <div class="label">Completed</div>
+        </div>
+    </div>
+
+    <div class="section-header">
+        <h2>My Projects</h2>
+        <a class="cta-btn" href="start-project.html">+ Start New Project</a>
+    </div>
+
+    <div id="projectsArea"></div>
+
+</div>
+
+<script>
+
+    const user = JSON.parse(localStorage.getItem("user") || "null");
+    const token = localStorage.getItem("token");
+
+    if (!user || !token) {
+        window.location.href = "login_page.html";
+    }
+
+    function badgeClass(status) {
+        if (status === "Completed") return "completed";
+        if (status === "In Progress") return "progress";
+        return "planning";
+    }
+
+    function loadProjects() {
+        const projects = JSON.parse(localStorage.getItem("sankalpProjects") || "[]");
+        const area = document.getElementById("projectsArea");
+
+        document.getElementById("statTotal").textContent = projects.length;
+        document.getElementById("statProgress").textContent =
+            projects.filter(p => p.status === "In Progress").length;
+        document.getElementById("statCompleted").textContent =
+            projects.filter(p => p.status === "Completed").length;
+
+        if (projects.length === 0) {
+            area.innerHTML = `
+                <div class="empty">
+                    <p>You haven't started any projects yet.</p>
+                </div>
+            `;
+            return;
+        }
+
+        const grid = document.createElement("div");
+        grid.className = "projects-grid";
+
+        projects.forEach(project => {
+            const status = project.status || "Planning";
+            const progress = project.progress || 0;
+
+            const card = document.createElement("div");
+            card.className = "project-card";
+
+            const badge = document.createElement("span");
+            badge.className = `badge ${badgeClass(status)}`;
+            badge.textContent = status;
+            card.appendChild(badge);
+
+            const title = document.createElement("h3");
+            title.textContent = project.project_name || "Untitled Project";
+            card.appendChild(title);
+
+            [
+                `Type: ${project.project_type || "-"}`,
+                `Location: ${project.location || "-"}`,
+                `Budget: ₹${project.budget || "Not specified"}`
+            ].forEach(text => {
+                const detail = document.createElement("div");
+                detail.className = "project-detail";
+                detail.textContent = text;
+                card.appendChild(detail);
+            });
+
+            const track = document.createElement("div");
+            track.className = "progress-bar-track";
+
+            const fill = document.createElement("div");
+            fill.className = "progress-bar-fill";
+            fill.style.width = `${progress}%`;
+
+            track.appendChild(fill);
+            card.appendChild(track);
+
+            grid.appendChild(card);
+        });
+
+        area.innerHTML = "";
+        area.appendChild(grid);
+    }
+
+    loadProjects();
+
+</script>
+
+</body>
+</html>

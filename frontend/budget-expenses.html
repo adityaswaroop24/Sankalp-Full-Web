@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Budget & Expenses | Sankalp</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Inter", sans-serif;
+            background: #f5f6f8;
+            color: #111827;
+            min-height: 100vh;
+        }
+
+        .navbar {
+            height: 72px;
+            background: white;
+            border-bottom: 1px solid #e5e7eb;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 7%;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-box {
+            width: 38px;
+            height: 38px;
+            background: #f59e0b;
+            border-radius: 9px;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            font-weight: 800;
+            color: #111827;
+        }
+
+        .logo strong {
+            font-size: 18px;
+            letter-spacing: 0.5px;
+        }
+
+        .back-link {
+            font-size: 13px;
+            font-weight: 600;
+            color: #6b7280;
+            text-decoration: none;
+        }
+
+        .back-link:hover {
+            color: #d97706;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 45px 20px;
+        }
+
+        .welcome h1 {
+            font-size: 28px;
+            margin-bottom: 6px;
+        }
+
+        .welcome p {
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+            margin: 30px 0;
+        }
+
+        .stat-card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 14px;
+            padding: 22px;
+        }
+
+        .stat-card .value {
+            font-size: 26px;
+            font-weight: 800;
+        }
+
+        .stat-card .label {
+            font-size: 13px;
+            color: #6b7280;
+            margin-top: 4px;
+        }
+
+        .section {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 14px;
+            padding: 26px;
+        }
+
+        .section h2 {
+            font-size: 18px;
+            margin-bottom: 18px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+
+        th {
+            text-align: left;
+            color: #6b7280;
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 11px;
+            letter-spacing: 0.5px;
+            padding: 10px 12px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #f3f4f6;
+            color: #374151;
+        }
+
+        .empty-row {
+            text-align: center;
+            color: #6b7280;
+            padding: 30px;
+        }
+
+        .table-scroll {
+            overflow-x: auto;
+        }
+
+        @media (max-width: 640px) {
+
+            .navbar {
+                height: auto;
+                flex-wrap: wrap;
+                gap: 10px;
+                padding: 14px 5%;
+            }
+
+            .container {
+                padding: 30px 16px;
+            }
+
+            .welcome h1 {
+                font-size: 22px;
+            }
+
+            .stats {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+
+            table {
+                min-width: 420px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<nav class="navbar">
+    <div class="logo">
+        <div class="logo-box">S</div>
+        <strong>SANKALP</strong>
+    </div>
+
+    <a class="back-link" href="customer-dashboard.html">← Back to Dashboard</a>
+</nav>
+
+<div class="container">
+
+    <div class="welcome">
+        <h1>Budget & Expenses</h1>
+        <p>An overview of the estimated budgets across all your projects.</p>
+    </div>
+
+    <div class="stats">
+        <div class="stat-card">
+            <div class="value" id="statTotalBudget">₹0</div>
+            <div class="label">Combined Estimated Budget</div>
+        </div>
+
+        <div class="stat-card">
+            <div class="value" id="statAvgBudget">₹0</div>
+            <div class="label">Average Budget per Project</div>
+        </div>
+
+        <div class="stat-card">
+            <div class="value" id="statProjectCount">0</div>
+            <div class="label">Projects Tracked</div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>Budget by Project</h2>
+        <div id="budgetArea"></div>
+    </div>
+
+</div>
+
+<script>
+
+    const user = JSON.parse(localStorage.getItem("user") || "null");
+    const token = localStorage.getItem("token");
+
+    if (!user || !token) {
+        window.location.href = "login_page.html";
+    }
+
+    function formatRupees(amount) {
+        return `₹${Number(amount || 0).toLocaleString("en-IN")}`;
+    }
+
+    function loadBudgets() {
+        const projects = JSON.parse(localStorage.getItem("sankalpProjects") || "[]");
+        const area = document.getElementById("budgetArea");
+
+        const totalBudget = projects.reduce((sum, p) => sum + (Number(p.budget) || 0), 0);
+        const avgBudget = projects.length ? Math.round(totalBudget / projects.length) : 0;
+
+        document.getElementById("statTotalBudget").textContent = formatRupees(totalBudget);
+        document.getElementById("statAvgBudget").textContent = formatRupees(avgBudget);
+        document.getElementById("statProjectCount").textContent = projects.length;
+
+        if (projects.length === 0) {
+            area.innerHTML = `<p class="empty-row">No projects yet -- start one to see budget details here.</p>`;
+            return;
+        }
+
+        const table = document.createElement("table");
+
+        const thead = document.createElement("thead");
+        thead.innerHTML = `
+            <tr>
+                <th>Project</th>
+                <th>Type</th>
+                <th>Location</th>
+                <th>Status</th>
+                <th>Budget</th>
+            </tr>
+        `;
+        table.appendChild(thead);
+
+        const tbody = document.createElement("tbody");
+
+        projects.forEach(project => {
+            const row = document.createElement("tr");
+
+            [
+                project.project_name || "-",
+                project.project_type || "-",
+                project.location || "-",
+                project.status || "Planning",
+                formatRupees(project.budget)
+            ].forEach(value => {
+                const cell = document.createElement("td");
+                cell.textContent = value;
+                row.appendChild(cell);
+            });
+
+            tbody.appendChild(row);
+        });
+
+        table.appendChild(tbody);
+
+        const scrollWrap = document.createElement("div");
+        scrollWrap.className = "table-scroll";
+        scrollWrap.appendChild(table);
+
+        area.innerHTML = "";
+        area.appendChild(scrollWrap);
+    }
+
+    loadBudgets();
+
+</script>
+
+</body>
+</html>
