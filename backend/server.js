@@ -25,7 +25,8 @@ app.use("/api/tasks", taskRoutes);
 app.get("/", (req, res) => {
     res.json({
         success: true,
-        message: "Sankalp backend is running!"
+        message: "Sankalp backend is running!",
+        autoDeployTest: true
     });
 });
 
