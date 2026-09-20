@@ -5,6 +5,7 @@ const crypto = require("crypto");
 const User = require("../models/User");
 const DailyReport = require("../models/DailyReport");
 const { sendResetEmail } = require("../utils/mailer");
+const { verifyRecaptcha } = require("../utils/recaptcha");
 
 const toPublicUser = (user) => ({
     id: user._id.toString(),
@@ -16,12 +17,21 @@ const toPublicUser = (user) => ({
 
 const signup = async (req, res) => {
     try {
-        const { name, email, password, role } = req.body;
+        const { name, email, password, role, recaptchaToken } = req.body;
 
         if (!name || !email || !password) {
             return res.status(400).json({
                 success: false,
                 message: "Name, email and password are required."
+            });
+        }
+
+        const captchaValid = await verifyRecaptcha(recaptchaToken);
+
+        if (!captchaValid) {
+            return res.status(400).json({
+                success: false,
+                message: "CAPTCHA verification failed. Please try again."
             });
         }
 
