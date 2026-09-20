@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Material Cost Estimator | Sankalp</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Inter", sans-serif;
+            background: #f5f6f8;
+            color: #111827;
+            min-height: 100vh;
+        }
+
+        .navbar {
+            height: 72px;
+            background: white;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 7%;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-box {
+            width: 38px;
+            height: 38px;
+            background: #f59e0b;
+            border-radius: 9px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: 800;
+            color: #111827;
+        }
+
+        .logo strong {
+            font-size: 18px;
+            letter-spacing: 0.5px;
+        }
+
+        .back-link {
+            font-size: 13px;
+            font-weight: 600;
+            color: #6b7280;
+            text-decoration: none;
+        }
+
+        .back-link:hover {
+            color: #d97706;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 45px 20px;
+        }
+
+        .heading h1 {
+            font-size: 26px;
+            margin-bottom: 6px;
+        }
+
+        .heading p {
+            color: #6b7280;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        .disclaimer {
+            background: #fffbeb;
+            border: 1px solid #fde68a;
+            color: #92400e;
+            border-radius: 10px;
+            padding: 14px 16px;
+            font-size: 13px;
+            margin-bottom: 26px;
+            line-height: 1.5;
+        }
+
+        .form-card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 16px;
+            padding: 30px;
+        }
+
+        .field {
+            margin-bottom: 18px;
+        }
+
+        label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #374151;
+        }
+
+        select, input {
+            width: 100%;
+            border: 1px solid #d1d5db;
+            border-radius: 9px;
+            padding: 12px 13px;
+            font-family: inherit;
+            font-size: 14px;
+            outline: none;
+        }
+
+        select:focus, input:focus {
+            border-color: #f59e0b;
+            box-shadow: 0 0 0 3px rgba(245,158,11,0.1);
+        }
+
+        .add-row-btn {
+            background: none;
+            border: 1px dashed #d1d5db;
+            border-radius: 9px;
+            padding: 10px;
+            width: 100%;
+            font-family: inherit;
+            font-size: 13px;
+            font-weight: 600;
+            color: #6b7280;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+
+        .add-row-btn:hover {
+            border-color: #f59e0b;
+            color: #d97706;
+        }
+
+        .material-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr auto;
+            gap: 10px;
+            margin-bottom: 12px;
+            align-items: end;
+        }
+
+        .remove-btn {
+            border: none;
+            background: none;
+            color: #b91c1c;
+            font-size: 18px;
+            cursor: pointer;
+            height: 46px;
+        }
+
+        .calc-btn {
+            width: 100%;
+            height: 50px;
+            border: none;
+            border-radius: 9px;
+            background: #f59e0b;
+            color: #111827;
+            font-size: 14px;
+            font-weight: 800;
+            cursor: pointer;
+            margin-top: 8px;
+        }
+
+        .calc-btn:hover {
+            background: #d97706;
+            color: white;
+        }
+
+        .result-card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 14px;
+            padding: 26px;
+            margin-top: 24px;
+            display: none;
+        }
+
+        .result-card.visible {
+            display: block;
+        }
+
+        .result-card h2 {
+            font-size: 16px;
+            margin-bottom: 16px;
+        }
+
+        .result-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            padding: 8px 0;
+            border-bottom: 1px solid #f3f4f6;
+            color: #374151;
+        }
+
+        .result-total {
+            display: flex;
+            justify-content: space-between;
+            font-size: 16px;
+            font-weight: 800;
+            padding-top: 14px;
+            margin-top: 6px;
+        }
+
+        @media (max-width: 560px) {
+            .navbar {
+                padding: 14px 5%;
+                height: auto;
+                flex-wrap: wrap;
+                gap: 10px;
+            }
+
+            .material-row {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .remove-btn {
+                grid-column: 1 / -1;
+                justify-self: end;
+                height: auto;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<nav class="navbar">
+    <div class="logo">
+        <div class="logo-box">S</div>
+        <strong>SANKALP</strong>
+    </div>
+
+    <a class="back-link" href="customer-dashboard.html">← Back to Dashboard</a>
+</nav>
+
+<div class="container">
+
+    <div class="heading">
+        <h1>Material Cost Estimator</h1>
+        <p>Pick materials and quantities to get a rough combined cost estimate.</p>
+    </div>
+
+    <div class="disclaimer">
+        ⚠️ This calculates an <strong>estimate only</strong>, using the general reference price ranges from the Material Details page — not live vendor quotes. Treat it as a starting point for budgeting, not a final cost.
+    </div>
+
+    <div class="form-card">
+        <div id="rowsArea"></div>
+
+        <button type="button" class="add-row-btn" id="addRowBtn">+ Add another material</button>
+
+        <button type="button" class="calc-btn" id="calcBtn">Calculate Estimate</button>
+    </div>
+
+    <div class="result-card" id="resultCard">
+        <h2>Estimated Cost</h2>
+        <div id="resultRows"></div>
+    </div>
+
+</div>
+
+<script>
+
+    const user = JSON.parse(localStorage.getItem("user") || "null");
+    const token = localStorage.getItem("token");
+
+    if (!user || !token) {
+        window.location.href = "login_page.html";
+    }
+
+    const materials = [
+        { name: "Cement (OPC 53 Grade)", unit: "50 kg bag", low: 350, high: 420 },
+        { name: "TMT Steel Bars (Fe 500)", unit: "kg", low: 60, high: 75 },
+        { name: "Red Clay Bricks", unit: "1,000 bricks", low: 6000, high: 9000 },
+        { name: "River Sand", unit: "cu. ft.", low: 40, high: 60 },
+        { name: "Aggregate / Gravel", unit: "cu. ft.", low: 35, high: 55 },
+        { name: "Vitrified Tiles", unit: "sq. ft.", low: 40, high: 90 },
+        { name: "Emulsion Paint", unit: "litre", low: 250, high: 450 },
+        { name: "Plywood (18mm)", unit: "sq. ft.", low: 70, high: 110 },
+        { name: "Ready Mix Concrete", unit: "cu. m.", low: 5500, high: 6500 }
+    ];
+
+    const rowsArea = document.getElementById("rowsArea");
+
+    function addRow() {
+        const row = document.createElement("div");
+        row.className = "material-row";
+
+        const materialField = document.createElement("div");
+        materialField.className = "field";
+        materialField.style.marginBottom = "0";
+
+        const materialLabel = document.createElement("label");
+        materialLabel.textContent = "Material";
+        materialField.appendChild(materialLabel);
+
+        const select = document.createElement("select");
+        select.className = "material-select";
+
+        materials.forEach((material, index) => {
+            const option = document.createElement("option");
+            option.value = index;
+            option.textContent = `${material.name} (per ${material.unit})`;
+            select.appendChild(option);
+        });
+
+        materialField.appendChild(select);
+        row.appendChild(materialField);
+
+        const qtyField = document.createElement("div");
+        qtyField.className = "field";
+        qtyField.style.marginBottom = "0";
+
+        const qtyLabel = document.createElement("label");
+        qtyLabel.textContent = "Quantity";
+        qtyField.appendChild(qtyLabel);
+
+        const qtyInput = document.createElement("input");
+        qtyInput.type = "number";
+        qtyInput.min = "0";
+        qtyInput.className = "material-qty";
+        qtyInput.placeholder = "e.g. 100";
+        qtyField.appendChild(qtyInput);
+
+        row.appendChild(qtyField);
+
+        const removeBtn = document.createElement("button");
+        removeBtn.type = "button";
+        removeBtn.className = "remove-btn";
+        removeBtn.textContent = "✕";
+        removeBtn.addEventListener("click", () => row.remove());
+
+        row.appendChild(removeBtn);
+
+        rowsArea.appendChild(row);
+    }
+
+    document.getElementById("addRowBtn").addEventListener("click", addRow);
+
+    addRow();
+
+    document.getElementById("calcBtn").addEventListener("click", () => {
+        const rows = rowsArea.querySelectorAll(".material-row");
+
+        let lowTotal = 0;
+        let highTotal = 0;
+
+        const resultRows = document.getElementById("resultRows");
+        resultRows.innerHTML = "";
+
+        rows.forEach(row => {
+            const select = row.querySelector(".material-select");
+            const qtyInput = row.querySelector(".material-qty");
+
+            const quantity = Number(qtyInput.value) || 0;
+
+            if (quantity <= 0) {
+                return;
+            }
+
+            const material = materials[Number(select.value)];
+            const rowLow = material.low * quantity;
+            const rowHigh = material.high * quantity;
+
+            lowTotal += rowLow;
+            highTotal += rowHigh;
+
+            const resultRow = document.createElement("div");
+            resultRow.className = "result-row";
+
+            const label = document.createElement("span");
+            label.textContent = `${material.name} × ${quantity} ${material.unit}`;
+
+            const value = document.createElement("span");
+            value.textContent = `₹${rowLow.toLocaleString("en-IN")} – ₹${rowHigh.toLocaleString("en-IN")}`;
+
+            resultRow.appendChild(label);
+            resultRow.appendChild(value);
+            resultRows.appendChild(resultRow);
+        });
+
+        const totalRow = document.createElement("div");
+        totalRow.className = "result-total";
+
+        const totalLabel = document.createElement("span");
+        totalLabel.textContent = "Estimated Total";
+
+        const totalValue = document.createElement("span");
+        totalValue.textContent = `₹${lowTotal.toLocaleString("en-IN")} – ₹${highTotal.toLocaleString("en-IN")}`;
+
+        totalRow.appendChild(totalLabel);
+        totalRow.appendChild(totalValue);
+        resultRows.appendChild(totalRow);
+
+        document.getElementById("resultCard").classList.add("visible");
+    });
+
+</script>
+
+</body>
+</html>

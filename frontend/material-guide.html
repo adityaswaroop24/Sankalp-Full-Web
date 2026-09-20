@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Material Details | Sankalp</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Inter", sans-serif;
+            background: #f5f6f8;
+            color: #111827;
+            min-height: 100vh;
+        }
+
+        .navbar {
+            height: 72px;
+            background: white;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 7%;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-box {
+            width: 38px;
+            height: 38px;
+            background: #f59e0b;
+            border-radius: 9px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: 800;
+            color: #111827;
+        }
+
+        .logo strong {
+            font-size: 18px;
+            letter-spacing: 0.5px;
+        }
+
+        .back-link {
+            font-size: 13px;
+            font-weight: 600;
+            color: #6b7280;
+            text-decoration: none;
+        }
+
+        .back-link:hover {
+            color: #d97706;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 45px 20px;
+        }
+
+        .heading h1 {
+            font-size: 26px;
+            margin-bottom: 6px;
+        }
+
+        .heading p {
+            color: #6b7280;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        .disclaimer {
+            background: #fffbeb;
+            border: 1px solid #fde68a;
+            color: #92400e;
+            border-radius: 10px;
+            padding: 14px 16px;
+            font-size: 13px;
+            margin-bottom: 26px;
+            line-height: 1.5;
+        }
+
+        .section {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 14px;
+            padding: 26px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+
+        th {
+            text-align: left;
+            color: #6b7280;
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 11px;
+            letter-spacing: 0.5px;
+            padding: 10px 12px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        td {
+            padding: 14px 12px;
+            border-bottom: 1px solid #f3f4f6;
+            color: #374151;
+        }
+
+        td.material-name {
+            font-weight: 600;
+            color: #111827;
+        }
+
+        .table-scroll {
+            overflow-x: auto;
+        }
+
+        .cta-btn {
+            display: inline-block;
+            margin-top: 20px;
+            background: #f59e0b;
+            color: #111827;
+            border: none;
+            border-radius: 9px;
+            padding: 12px 20px;
+            font-size: 13px;
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .cta-btn:hover {
+            background: #d97706;
+            color: white;
+        }
+
+        @media (max-width: 560px) {
+            .navbar {
+                padding: 14px 5%;
+                height: auto;
+                flex-wrap: wrap;
+                gap: 10px;
+            }
+
+            table {
+                min-width: 480px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<nav class="navbar">
+    <div class="logo">
+        <div class="logo-box">S</div>
+        <strong>SANKALP</strong>
+    </div>
+
+    <a class="back-link" href="customer-dashboard.html">← Back to Dashboard</a>
+</nav>
+
+<div class="container">
+
+    <div class="heading">
+        <h1>Material Details</h1>
+        <p>General reference pricing for common construction materials in India.</p>
+    </div>
+
+    <div class="disclaimer">
+        ⚠️ These are <strong>general reference ranges</strong> based on typical Indian market rates, not live or verified pricing from any supplier. Actual costs vary significantly by city, quality grade, brand, and season — always confirm current rates with your contractor or local vendors before budgeting.
+    </div>
+
+    <div class="section">
+        <div class="table-scroll">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Material</th>
+                        <th>Unit</th>
+                        <th>Typical Range (₹)</th>
+                        <th>Notes</th>
+                    </tr>
+                </thead>
+                <tbody id="materialsBody"></tbody>
+            </table>
+        </div>
+
+        <a class="cta-btn" href="material-estimator.html">Estimate a Project's Material Cost →</a>
+    </div>
+
+</div>
+
+<script>
+
+    const user = JSON.parse(localStorage.getItem("user") || "null");
+    const token = localStorage.getItem("token");
+
+    if (!user || !token) {
+        window.location.href = "login_page.html";
+    }
+
+    const materials = [
+        { name: "Cement (OPC 53 Grade)", unit: "50 kg bag", range: "₹350 – ₹420", notes: "Price varies by brand" },
+        { name: "TMT Steel Bars (Fe 500)", unit: "per kg", range: "₹60 – ₹75", notes: "Fluctuates with steel market" },
+        { name: "Red Clay Bricks", unit: "per 1,000 bricks", range: "₹6,000 – ₹9,000", notes: "Varies by region" },
+        { name: "River Sand", unit: "per cu. ft.", range: "₹40 – ₹60", notes: "Subject to local sand mining rules" },
+        { name: "Aggregate / Gravel", unit: "per cu. ft.", range: "₹35 – ₹55", notes: "Depends on size grade" },
+        { name: "Vitrified Tiles", unit: "per sq. ft.", range: "₹40 – ₹90", notes: "Higher for designer tiles" },
+        { name: "Emulsion Paint", unit: "per litre", range: "₹250 – ₹450", notes: "Premium brands cost more" },
+        { name: "Plywood (18mm)", unit: "per sq. ft.", range: "₹70 – ₹110", notes: "Marine-grade costs more" },
+        { name: "Ready Mix Concrete", unit: "per cu. m.", range: "₹5,500 – ₹6,500", notes: "Depends on grade (M20/M25...)" }
+    ];
+
+    const tbody = document.getElementById("materialsBody");
+
+    materials.forEach(material => {
+        const row = document.createElement("tr");
+
+        const nameCell = document.createElement("td");
+        nameCell.className = "material-name";
+        nameCell.textContent = material.name;
+        row.appendChild(nameCell);
+
+        [material.unit, material.range, material.notes].forEach(value => {
+            const cell = document.createElement("td");
+            cell.textContent = value;
+            row.appendChild(cell);
+        });
+
+        tbody.appendChild(row);
+    });
+
+</script>
+
+</body>
+</html>

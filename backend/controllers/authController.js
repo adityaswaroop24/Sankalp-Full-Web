@@ -3,6 +3,7 @@ const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
 
 const User = require("../models/User");
+const DailyReport = require("../models/DailyReport");
 const { sendResetEmail } = require("../utils/mailer");
 
 const toPublicUser = (user) => ({
@@ -152,6 +153,37 @@ const getAllUsers = async (req, res) => {
     }
 };
 
+const getContractors = async (req, res) => {
+    try {
+        const professionals = await User.find({ role: "Professional" }).sort({ created_at: -1 });
+
+        const contractors = await Promise.all(professionals.map(async (pro) => {
+            const reportsFiled = await DailyReport.countDocuments({ professionalId: pro._id });
+
+            return {
+                id: pro._id.toString(),
+                name: pro.name,
+                email: pro.email,
+                reportsFiled,
+                memberSince: pro.created_at
+            };
+        }));
+
+        res.json({
+            success: true,
+            contractors
+        });
+
+    } catch (error) {
+        console.error("Get contractors error:", error);
+
+        res.status(500).json({
+            success: false,
+            message: "Failed to fetch contractors."
+        });
+    }
+};
+
 const forgotPassword = async (req, res) => {
     try {
         const { email } = req.body;
@@ -245,6 +277,7 @@ module.exports = {
     signup,
     login,
     getAllUsers,
+    getContractors,
     forgotPassword,
     resetPassword
 };
