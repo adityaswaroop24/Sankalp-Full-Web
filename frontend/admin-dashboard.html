@@ -24,11 +24,12 @@
             min-height: 100vh;
         }
 
+        /* NAVBAR */
+
         .navbar {
             height: 72px;
             background: white;
             border-bottom: 1px solid #e5e7eb;
-
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -46,11 +47,9 @@
             height: 38px;
             background: #f59e0b;
             border-radius: 9px;
-
             display: flex;
             justify-content: center;
             align-items: center;
-
             font-weight: 800;
             color: #111827;
         }
@@ -100,27 +99,56 @@
             color: #b91c1c;
         }
 
-        .container {
-            max-width: 1150px;
+        /* HERO */
+
+        .hero {
+            background: #17202a;
+            color: white;
+            padding: 45px 7%;
+        }
+
+        .hero-inner {
+            max-width: 1250px;
             margin: 0 auto;
-            padding: 45px 20px;
         }
 
-        .welcome h1 {
-            font-size: 28px;
-            margin-bottom: 6px;
+        .hero-tag {
+            display: inline-block;
+            background: rgba(245,158,11,0.15);
+            border: 1px solid rgba(245,158,11,0.4);
+            color: #fbbf24;
+            padding: 6px 14px;
+            border-radius: 30px;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 14px;
         }
 
-        .welcome p {
-            color: #6b7280;
+        .hero h1 {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        .hero p {
+            color: #cbd5e1;
             font-size: 14px;
+        }
+
+        /* CONTAINER */
+
+        .container {
+            max-width: 1250px;
+            margin: 0 auto;
+            padding: 40px 20px 60px;
         }
 
         .stats {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
             gap: 18px;
-            margin: 30px 0;
+            margin-bottom: 45px;
         }
 
         .stat-card {
@@ -131,7 +159,7 @@
         }
 
         .stat-card .value {
-            font-size: 30px;
+            font-size: 26px;
             font-weight: 800;
         }
 
@@ -151,6 +179,12 @@
 
         .section h2 {
             font-size: 18px;
+            margin-bottom: 4px;
+        }
+
+        .section .section-sub {
+            font-size: 13px;
+            color: #6b7280;
             margin-bottom: 18px;
         }
 
@@ -241,20 +275,20 @@
                 padding: 3px 8px;
             }
 
-            .nav-right {
-                gap: 10px;
-            }
-
             .user-name {
                 display: none;
             }
 
-            .container {
-                padding: 30px 16px;
+            .hero {
+                padding: 32px 5%;
             }
 
-            .welcome h1 {
-                font-size: 22px;
+            .hero h1 {
+                font-size: 24px;
+            }
+
+            .container {
+                padding: 30px 16px 40px;
             }
 
             .stats {
@@ -267,7 +301,7 @@
             }
 
             .stat-card .value {
-                font-size: 24px;
+                font-size: 22px;
             }
 
             .section {
@@ -303,12 +337,15 @@
     </div>
 </nav>
 
-<div class="container">
-
-    <div class="welcome">
+<section class="hero">
+    <div class="hero-inner">
+        <span class="hero-tag">Admin Control Center</span>
         <h1 id="welcomeHeading">Welcome back</h1>
-        <p>Platform overview — all projects and registered accounts.</p>
+        <p>Everything happening across Sankalp, in one place.</p>
     </div>
+</section>
+
+<div class="container">
 
     <div class="stats">
         <div class="stat-card">
@@ -322,13 +359,13 @@
         </div>
 
         <div class="stat-card">
-            <div class="value" id="statCustomers">0</div>
-            <div class="label">Customers</div>
+            <div class="value" id="statProfessionals">0</div>
+            <div class="label">Professionals</div>
         </div>
 
         <div class="stat-card">
-            <div class="value" id="statProfessionals">0</div>
-            <div class="label">Professionals</div>
+            <div class="value" id="statReports">0</div>
+            <div class="label">Daily Reports Filed</div>
         </div>
 
         <div class="stat-card">
@@ -345,6 +382,12 @@
     <div class="section">
         <h2>Registered Users</h2>
         <div id="usersArea"></div>
+    </div>
+
+    <div class="section">
+        <h2>Daily Site Reports</h2>
+        <div class="section-sub">Every progress/spend report filed by professionals, across all customers.</div>
+        <div id="reportsArea"></div>
     </div>
 
 </div>
@@ -450,8 +493,6 @@
             const users = data.users;
 
             document.getElementById("statUsers").textContent = users.length;
-            document.getElementById("statCustomers").textContent =
-                users.filter(u => u.role === "Customer").length;
             document.getElementById("statProfessionals").textContent =
                 users.filter(u => u.role === "Professional").length;
 
@@ -515,6 +556,81 @@
         }
     }
 
+    async function loadReports() {
+        const area = document.getElementById("reportsArea");
+
+        try {
+            const response = await fetch(`${API_BASE}/reports/all`, {
+                headers: { "Authorization": `Bearer ${token}` }
+            });
+
+            const data = await response.json();
+
+            if (!response.ok || !data.success) {
+                area.innerHTML = `<p class="status-msg">${data.message || "Failed to load reports."}</p>`;
+                return;
+            }
+
+            const reports = data.reports;
+
+            document.getElementById("statReports").textContent = reports.length;
+
+            if (reports.length === 0) {
+                area.innerHTML = `<p class="empty-row">No daily reports filed yet.</p>`;
+                return;
+            }
+
+            const table = document.createElement("table");
+
+            const thead = document.createElement("thead");
+            thead.innerHTML = `
+                <tr>
+                    <th>Date</th>
+                    <th>Project</th>
+                    <th>Contractor</th>
+                    <th>Customer</th>
+                    <th>Spent</th>
+                    <th>Summary</th>
+                </tr>
+            `;
+            table.appendChild(thead);
+
+            const tbody = document.createElement("tbody");
+
+            reports.forEach(report => {
+                const row = document.createElement("tr");
+
+                [
+                    new Date(report.reportDate).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" }),
+                    report.projectName,
+                    report.professionalName,
+                    report.customerEmail,
+                    `₹${Number(report.amountSpent).toLocaleString("en-IN")}`,
+                    report.workSummary
+                ].forEach(value => {
+                    const cell = document.createElement("td");
+                    cell.textContent = value;
+                    row.appendChild(cell);
+                });
+
+                tbody.appendChild(row);
+            });
+
+            table.appendChild(tbody);
+
+            const scrollWrap = document.createElement("div");
+            scrollWrap.className = "table-scroll";
+            scrollWrap.appendChild(table);
+
+            area.innerHTML = "";
+            area.appendChild(scrollWrap);
+
+        } catch (error) {
+            console.error("Failed to load reports:", error);
+            area.innerHTML = `<p class="status-msg">Could not reach the server.</p>`;
+        }
+    }
+
     async function loadVisitCount() {
         try {
             const response = await fetch(`${API_BASE}/visits`, {
@@ -533,6 +649,7 @@
 
     loadProjects();
     loadUsers();
+    loadReports();
     loadVisitCount();
 
 </script>

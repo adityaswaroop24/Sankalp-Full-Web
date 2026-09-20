@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Submit Daily Report | Sankalp</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Inter", sans-serif;
+            background: #f5f6f8;
+            color: #111827;
+            min-height: 100vh;
+        }
+
+        .navbar {
+            height: 72px;
+            background: white;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 7%;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-box {
+            width: 38px;
+            height: 38px;
+            background: #f59e0b;
+            border-radius: 9px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: 800;
+            color: #111827;
+        }
+
+        .logo strong {
+            font-size: 18px;
+            letter-spacing: 0.5px;
+        }
+
+        .back-link {
+            font-size: 13px;
+            font-weight: 600;
+            color: #6b7280;
+            text-decoration: none;
+        }
+
+        .back-link:hover {
+            color: #d97706;
+        }
+
+        .container {
+            max-width: 640px;
+            margin: 0 auto;
+            padding: 45px 20px;
+        }
+
+        .heading h1 {
+            font-size: 26px;
+            margin-bottom: 8px;
+        }
+
+        .heading p {
+            color: #6b7280;
+            font-size: 14px;
+            margin-bottom: 30px;
+        }
+
+        .form-card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 16px;
+            padding: 30px;
+        }
+
+        .field {
+            margin-bottom: 18px;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 18px;
+        }
+
+        label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #374151;
+        }
+
+        input, textarea {
+            width: 100%;
+            border: 1px solid #d1d5db;
+            border-radius: 9px;
+            padding: 12px 13px;
+            font-family: inherit;
+            font-size: 14px;
+            outline: none;
+        }
+
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        input:focus, textarea:focus {
+            border-color: #f59e0b;
+            box-shadow: 0 0 0 3px rgba(245,158,11,0.1);
+        }
+
+        .submit-btn {
+            width: 100%;
+            height: 50px;
+            border: none;
+            border-radius: 9px;
+            background: #f59e0b;
+            color: #111827;
+            font-size: 14px;
+            font-weight: 800;
+            cursor: pointer;
+            margin-top: 8px;
+        }
+
+        .submit-btn:hover {
+            background: #d97706;
+            color: white;
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .message {
+            display: none;
+            padding: 12px 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .message.success {
+            display: block;
+            background: #ecfdf5;
+            color: #047857;
+            border: 1px solid #a7f3d0;
+        }
+
+        .message.error {
+            display: block;
+            background: #fef2f2;
+            color: #b91c1c;
+            border: 1px solid #fecaca;
+        }
+
+        @media (max-width: 560px) {
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<nav class="navbar">
+    <div class="logo">
+        <div class="logo-box">S</div>
+        <strong>SANKALP</strong>
+    </div>
+
+    <a class="back-link" href="professional-dashboard.html">← Back to Dashboard</a>
+</nav>
+
+<div class="container">
+
+    <div class="heading">
+        <h1>Submit Daily Report</h1>
+        <p>Log today's work, spend, and progress so the homeowner can track it.</p>
+    </div>
+
+    <div id="message" class="message"></div>
+
+    <div class="form-card">
+        <form id="reportForm">
+
+            <div class="field">
+                <label>Customer's Email *</label>
+                <input type="email" id="customerEmail" placeholder="homeowner@email.com" required>
+            </div>
+
+            <div class="field">
+                <label>Project Name *</label>
+                <input type="text" id="projectName" placeholder="e.g. Reddy Villa, Kondapur" required>
+            </div>
+
+            <div class="grid-2">
+                <div class="field">
+                    <label>Report Date *</label>
+                    <input type="date" id="reportDate" required>
+                </div>
+
+                <div class="field">
+                    <label>Days Elapsed So Far</label>
+                    <input type="number" id="daysElapsed" min="0" placeholder="e.g. 12">
+                </div>
+            </div>
+
+            <div class="field">
+                <label>Amount Spent Today (₹) *</label>
+                <input type="number" id="amountSpent" min="0" placeholder="e.g. 15000" required>
+            </div>
+
+            <div class="field">
+                <label>Work Summary *</label>
+                <textarea id="workSummary" placeholder="What was done today? Any issues or updates for the homeowner?" required></textarea>
+            </div>
+
+            <button type="submit" class="submit-btn" id="submitBtn">Submit Report</button>
+
+        </form>
+    </div>
+
+</div>
+
+<script>
+
+    const API_BASE = "https://sankalp-full-web.onrender.com/api";
+
+    const user = JSON.parse(localStorage.getItem("user") || "null");
+    const token = localStorage.getItem("token");
+
+    if (!user || !token) {
+        window.location.href = "login_page.html";
+    } else if (user.role !== "Professional") {
+        window.location.href = "login_page.html";
+    }
+
+    document.getElementById("reportDate").valueAsDate = new Date();
+
+    function showMessage(text, type) {
+        const message = document.getElementById("message");
+        message.textContent = text;
+        message.className = "message " + type;
+    }
+
+    document.getElementById("reportForm").addEventListener("submit", async function(event) {
+        event.preventDefault();
+
+        const submitBtn = document.getElementById("submitBtn");
+
+        const payload = {
+            customerEmail: document.getElementById("customerEmail").value.trim(),
+            projectName: document.getElementById("projectName").value.trim(),
+            reportDate: document.getElementById("reportDate").value,
+            daysElapsed: document.getElementById("daysElapsed").value || null,
+            amountSpent: document.getElementById("amountSpent").value,
+            workSummary: document.getElementById("workSummary").value.trim()
+        };
+
+        submitBtn.disabled = true;
+        submitBtn.textContent = "Submitting...";
+
+        try {
+
+            const response = await fetch(`${API_BASE}/reports`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
+                },
+                body: JSON.stringify(payload)
+            });
+
+            const data = await response.json();
+
+            if (!response.ok || !data.success) {
+                showMessage(data.message || "Failed to submit report.", "error");
+                submitBtn.disabled = false;
+                submitBtn.textContent = "Submit Report";
+                return;
+            }
+
+            showMessage("Report submitted! Redirecting to your reports...", "success");
+
+            setTimeout(() => {
+                window.location.href = "my-reports.html";
+            }, 1200);
+
+        } catch (error) {
+            console.error("Submit report failed:", error);
+            showMessage("Could not reach the server. Please try again.", "error");
+            submitBtn.disabled = false;
+            submitBtn.textContent = "Submit Report";
+        }
+    });
+
+</script>
+
+</body>
+</html>
