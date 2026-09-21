@@ -236,11 +236,11 @@ const forgotPassword = async (req, res) => {
         const frontendUrl = process.env.FRONTEND_URL || "http://127.0.0.1:5500";
         const resetLink = `${frontendUrl}/reset-password.html?token=${token}`;
 
-        try {
-            await sendResetEmail(user.email, resetLink);
-        } catch (emailError) {
+        // Not awaited: the reply shouldn't depend on the mail provider's speed,
+        // and a failed send is logged instead of surfaced (the response is generic by design).
+        sendResetEmail(user.email, resetLink).catch((emailError) => {
             console.error("Failed to send reset email:", emailError);
-        }
+        });
 
         res.json(genericResponse);
 
